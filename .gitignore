@@ -1,0 +1,14 @@
+*.vs*
+*build*
+*~
+*.o
+*.a
+CMakeC*
+*.blg
+*.log
+*.bbl
+*.aux
+*.pdf
+*.dvi
+*.out
+*.toc
