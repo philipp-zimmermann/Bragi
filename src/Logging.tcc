@@ -45,7 +45,7 @@
 
 
 
-namespace marsUtils {
+namespace marsLogging {
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // types and constants
@@ -53,27 +53,14 @@ namespace marsUtils {
 
 using LoggingConfig = std::unordered_map<std::string, std::string>;
 
-
-enum class LogLevel : uint8_t
-{
-  trace = 100,  // more detailed information for debugging
-  debug = 101,  // general debugging messages
-  eval = 102,   // for evaluation messages that might be included in release versions
-  info = 103,
-  warn = 104,
-  error = 105,
-  dev = 106     // for development convenience, this should not be in any released version
-};
-
-
 // GLOBAL_LOG_LEVEL_CUTOFF
-#if defined(LOGGING_LEVEL_CUTOFF)
+#if defined(MARSLOGGING_GLOBAL_LEVEL)
 DISABLE_WARNING_PUSH
 DISABLE_WARNING_TYPE_LIMITS
-constexpr LogLevel GLOBAL_LOG_LEVEL_CUTOFF = static_cast<LogLevel>(LOGGING_LEVEL_CUTOFF);
-static_assert(0 <= LOGGING_LEVEL_CUTOFF &&
-                  LOGGING_LEVEL_CUTOFF <= std::numeric_limits<uint8_t>::max(),
-              "The value of LOGGING_LEVEL_CUTOFF is not in range of uint8_t.");
+constexpr LogLevel GLOBAL_LOG_LEVEL_CUTOFF = static_cast<LogLevel>(MARSLOGGING_GLOBAL_LEVEL);
+// static_assert(0 <= MARSLOGGING_GLOBAL_LEVEL &&
+//                   MARSLOGGING_GLOBAL_LEVEL <= std::numeric_limits<uint8_t>::max(),
+//               "The value of MARSLOGGING_GLOBAL_LEVEL is not in range of uint8_t.");
 DISABLE_WARNING_POP
 #else
 constexpr LogLevel GLOBAL_LOG_LEVEL_CUTOFF = LogLevel::info;
@@ -254,18 +241,20 @@ inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config)
   };
 
 
-#ifdef MARS_LOGGING_ENABLE
+#ifdef MARSLOGGING_GLOBAL_ENABLE
   const auto type = config.find("type");
   if (type->second == "std_cerr")
   {
     std::unique_ptr<CerrLogWriter> cerrLogWriter(new CerrLogWriter{config});
-    cerrLogWriter->log(std::move(creationInfo), LogLevel::debug);
+    if(MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug) {
+      cerrLogWriter->log(std::move(creationInfo), LogLevel::debug); }
     return cerrLogWriter;
   }
   else if (type->second == "file")
   {
     auto fileLogWriter = std::make_unique<FileLogWriter>(config);
-    fileLogWriter->log(std::move(creationInfo), LogLevel::debug);
+    if(MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug) {
+      fileLogWriter->log(std::move(creationInfo), LogLevel::debug); }
     return fileLogWriter;
   }
   else

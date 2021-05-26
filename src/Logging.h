@@ -11,45 +11,17 @@
  * @date 2020-06-24
  */
 
+
 #ifndef _LOGGING_H_
 #define _LOGGING_H_
 
-/**
- * @brief macro MARS_LOG invoces a locally declared function template log and prints
- *        the function and line number before the logged message.
- */
-#ifndef MARS_LOG
-#define MARS_LOG(msgLvl) log<msgLvl>() << __FUNCTION__ << ':' << __LINE__ << ": "
-#endif
 
 #include "Logging.tcc"
-
-namespace marsUtils {
-
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// runtime application-wide configuration for the marsLogging system
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-/**
- * @brief System-wide configuration for the marsLogging framework.
- *
- * This might be called once, before any Log instance is created.
- * When this function is not called, the default value is used as defined by
- * marsUtils::getLogWriter(), which is: {{"type", "std_cerr"},{"color", ""}}
- *
- * See 0_globalConfig_and_coreConcept.cpp for all other valid configurations.
- * If the invalid config is provided, the system uses an empty loggerand prints nothing.
- *
- * @param config std::unordered_map<std::string, std::string>
- */
-inline void configureLogging(const LoggingConfig& config) { getLogWriter(config); }
-
-
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // log messages
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
+namespace marsLogging {
 /**
  * @brief This is the masLogging interface, with which a message is logged.
  *
@@ -61,7 +33,7 @@ inline void configureLogging(const LoggingConfig& config) { getLogWriter(config)
  * @tparam localLogLevelCutoff  the local cutoff level, overrides the global cutoff.
  * @tparam inEnabled            enables/disables printing for this message
  */
-template <LogLevel logLevel = marsUtils::LogLevel::error,
+template <LogLevel logLevel = marsLogging::LogLevel::error,
           class sourceClass = NO_SOURCE_DEFINED,
           int16_t localLogLevelCutoff = -1,
           bool isEnabled = true>
@@ -94,7 +66,7 @@ class Log
   // decide if this logged message is to be printed.
   constexpr static bool isPrinted() noexcept
   {
-#ifndef MARS_LOGGING_ENABLE
+#ifndef MARSLOGGING_GLOBAL_ENABLE
     return false;
 #else
     if (!isEnabled) return true;
@@ -111,5 +83,5 @@ class Log
 };
 
 
-}  // namespace marsUtils
+}  // namespace marsLogging
 #endif  // include guard
