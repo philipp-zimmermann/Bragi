@@ -12,3 +12,7 @@ CMakeC*
 *.dvi
 *.out
 *.toc
+bin/*
+cmake/*
+doc/*
+README.md
