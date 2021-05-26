@@ -23,15 +23,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 
 ##▁3▁OPTIONS▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-set(_ML_VALID_LEVEL_NAMES  "trace;debug;info;warn;error;dev" CACHE INTERNAL
-                           "The list of valid strings for log level names")
-set(MARSLOGGING_GLOBAL_ENABLE ON CACHE BOOL
-    "enables/disables printing of messages with marsLogging. Overrides all other levels")
-set(MARSLOGGING_GLOBAL_LEVEL "info" CACHE STRING
-                             "Defines the lowest level of printed log messages.")
-set_property(CACHE MARSLOGGING_GLOBAL_LEVEL PROPERTY STRINGS ${_ML_VALID_LEVEL_NAMES})
-
-# include Module for option adding here
+# Provides the function marsLogging_add_component (component_name)
+# This is the recommendet way to add component local enable and log-level options.
+# The Header ComponentConfig.h is automatically generated with defines for all components.
+include(LoggingOptions)
+marsLogging_add_component(GLOBAL)  # options for component GLOBAL are set by default
 
 
 
@@ -39,6 +35,7 @@ set_property(CACHE MARSLOGGING_GLOBAL_LEVEL PROPERTY STRINGS ${_ML_VALID_LEVEL_N
 set(_ML_INCLUDE_DIR ${marsLogging_SOURCE_DIR}/include) # this will change when installing
 set(_ML_SOURCE_DIR ${marsLogging_SOURCE_DIR}/src)
 set(_ML_PRINT_CONFIG_DIR ${marsLogging_BINARY_DIR})
+
 
 
 ##▁5▁EXPORTED▁TARGETS▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
