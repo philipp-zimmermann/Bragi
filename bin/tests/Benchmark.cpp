@@ -46,7 +46,7 @@ constexpr static auto function_LOG() noexcept
 }
 
 // using statements:
-using using_TRACE = marsLogging::Log<static_cast<marsLogging::LogLevel>(0), Benchmark>;
+using using_TRACE = marsLogging::Log<marsLogging::LogLevel::trace, Benchmark>;
 using using_WARN = marsLogging::Log<marsLogging::LogLevel::warn, Benchmark>;
 
 // define macro:
@@ -59,6 +59,8 @@ constexpr inline auto ctor_LOG(msgType&& msg = "")
   return marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{
       std::forward<msgType>(msg)};
 }
+
+MARSLOGGINING_INIT(Benchmark, compConfig_benchmark)
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 
@@ -69,7 +71,7 @@ int main()
   // marsLogging::configureLogging({{"type", "file"}, {"path", "benchmarkResults.txt"}});
 
 
-  marsLogging::Log<marsLogging::LogLevel::info, Benchmark, 0> result;
+  marsLogging::Log<marsLogging::LogLevel::info, Benchmark, 0, true> result;
   Timer timer;
   std::cout << "\n\n";
   result << "____________________RESULTS____________________\n";
@@ -88,14 +90,14 @@ int main()
             " with function wrapper:\n";
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    function_LOG<3>() << "this is a message with a long string. I am afraid...";
+    function_LOG<103>() << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
   result << "HEAP LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    function_LOG<0>() << "this is a message with a long string. I am afraid...";
+    function_LOG<100>() << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
   result << "HEAP CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
@@ -106,14 +108,14 @@ int main()
             " with function wrapper:\n";
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    function_LOG<3>() << i << 5;
+    function_LOG<103>() << i << 5;
   }
   duration = timer.stop();
   result << "STACK LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    function_LOG<0>() << i << 5;
+    function_LOG<100>() << i << 5;
   }
   duration = timer.stop();
   result << "STACK CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
@@ -124,14 +126,14 @@ int main()
             " with function wrapper in constructor:\n";
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    ctor_LOG<3>("this is a message with a long string. I am afraid...");
+    ctor_LOG<103>("this is a message with a long string. I am afraid...");
   }
   duration = timer.stop();
   result << "CTOR LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    ctor_LOG<0>("this is a message with a long string. I am afraid...");
+    ctor_LOG<100>("this is a message with a long string. I am afraid...");
   }
   duration = timer.stop();
   result << "CTOR CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
@@ -160,17 +162,35 @@ int main()
             " with #define macro:\n";
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    macro_LOG(3) << "this is a message with a long string. I am afraid...";
+    macro_LOG(103) << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
   result << "#define LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
-    macro_LOG(0) << "this is a message with a long string. I am afraid...";
+    macro_LOG(100) << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
   result << "#define CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
+
+  //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  result << "\nNEW: Timing heap allocated objects: logging of long strings"
+            " with macros defined in `MarsLogging`:\n";
+  timer.start();
+  for ( uint32_t i = 0; i < 10000; ++i) {
+    LOG_FUNC_DETAIL(eval) << "this is a message with a long string. I am afraid...";
+  }
+  duration = timer.stop();
+  result << "HEAP LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
+
+  timer.start();
+  for ( uint32_t i = 0; i < 10000; ++i) {
+    LOG_DEBUG << "this is a message with a long string. I am afraid...";
+  }
+  duration = timer.stop();
+  result << "HEAP CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
