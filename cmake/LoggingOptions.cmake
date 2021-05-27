@@ -66,9 +66,9 @@ set(_ML_VALID_ENABLE_NAMES  "true;false" CACHE INTERNAL
                             "The list of valid strings for component_enable")
 
 set(_ML_COMPONENT_LIST "" CACHE INTERNAL "")
-set(_ML_COMPONENT_CONFIG_TEMP ${marsLogging_BINARY_DIR}/LoggingComponentConfig.h.in
+set(_ML_COMPONENT_CONFIG_TEMP ${_ML_COMPONENT_CONFIG_DIR}/LoggingComponentConfig.h.in
                               CACHE INTERNAL "")
-set(_ML_COMPONENT_CONFIG_HEADER ${marsLogging_BINARY_DIR}/LoggingComponentConfig.h
+set(_ML_COMPONENT_CONFIG_HEADER ${_ML_COMPONENT_CONFIG_DIR}/LoggingComponentConfig.h
                                 CACHE INTERNAL "")
 
 
