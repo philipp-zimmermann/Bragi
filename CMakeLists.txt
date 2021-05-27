@@ -11,7 +11,7 @@ project(marsLogging
 
 
 ##▁1▁DETERMINE▁ENVIRONMENT▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-if(PROJECT_SOURCE_DIR STREQUAL marsLogging_SOURCE_DIR)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(_ML_IS_MAIN_PROJECT 1)
 endif()
 
