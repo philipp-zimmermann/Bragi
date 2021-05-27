@@ -2,8 +2,19 @@
 ## functioins for the library users
 ##––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-# @brief adds options MARSLOGGING_${component_name}_ENABLE with value "true"
-# and MARSLOGGING_${component_name}_Level with value "info"
+# @brief adds options for the passed component name with provided initial values.
+#
+# @synopsis
+#   marsLogging_add_component(<component_name> [LEVEL <level_val>] [ENABLE <enable_val>])
+#
+# The generated options are named:
+# MARSLOGGING_${component_name}_ENABLE and MARSLOGGING_${component_name}_LEVEL
+# where the component_name is always converted to uppercase
+#
+# NOTE: This does not override any values of already existent chache variables.
+#       These may exist from prior runs of `cmake` or beacuse they are passed as command-
+#       line arguments to `cmake`.
+#
 function(marsLogging_add_component component_name)
   cmake_parse_arguments(PARSE_ARGV 1 ${_ML_ARG_PREFIX} "" "${_ML_OPTIONS_KEYWORDS}" "")
   _check_and_warn_unpares_args()
@@ -38,10 +49,17 @@ function(marsLogging_add_component component_name)
 endfunction()
 
 
-# @brief set the values of component options reated with marsLogging_add_component
-# NOTE: this overrides any command line arguments, passed to cmake!
-# Do _NOT_ set these values directly. The generated file `LoggingComponentConfig.h` might
-# otherwise not be generated correctly.
+# @brief set the values of component options created with marsLogging_add_component()
+#
+# @synopsis
+#   marsLogging_set_options(<component_name> [LEVEL <level_val>] [ENABLE <enable_val>])
+#
+# NOTE: * this overrides any command line arguments, passed to cmake!
+#         Changes done with cmake-gui and ccmake are overridden as well.
+#       * Do _NOT_ set the values of the LEVEL/ENABLE variables directly. The generated
+#         file `LoggingComponentConfig.h` might otherwise not be generated correctly.
+#         If you wish to implement component config logic in cmake use this function.
+#
 function(marsLogging_set_options component_name)
   cmake_parse_arguments(PARSE_ARGV 1 ${_ML_ARG_PREFIX} "" "${_ML_OPTIONS_KEYWORDS}" "")
   _check_and_warn_unpares_args()
