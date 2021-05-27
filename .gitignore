@@ -12,7 +12,8 @@ CMakeC*
 *.dvi
 *.out
 *.toc
-bin/*
+bin/examples*
+bin/tests/_*
 cmake/*
 doc/*
 README.md
