@@ -38,9 +38,25 @@ function(marsLogging_add_component component_name)
 endfunction()
 
 
+# @brief set the values of component options reated with marsLogging_add_component
+# NOTE: this overrides any command line arguments, passed to cmake!
+# Do _NOT_ set these values directly. The generated file `LoggingComponentConfig.h` might
+# otherwise not be generated correctly.
+function(marsLogging_set_options component_name)
+  cmake_parse_arguments(PARSE_ARGV 1 ${_func_prefix} "" "${_option_func_keywords}" "")
+  _check_and_warn_unpares_args()
+  foreach(keyword IN LISTS _option_func_keywords)
+    string(TOUPPER ${component_name} comp_upper)
+    set(MARSLOGGING_${comp_upper}_${keyword} ${${_func_prefix}_${keyword}} CACHE STRING ""
+                                             FORCE)
+  endforeach()
+  generate_temp_file()
+endfunction()
+
+
 
 ##––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-## helper functions and variables
+## module utility functions and variables
 ##––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 ###_internal_chached_constants____________________________________________________________
