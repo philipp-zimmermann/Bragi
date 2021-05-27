@@ -23,12 +23,12 @@ function(generate_temp_file)
   file(WRITE ${_ML_COMPONENT_CONFIG_TEMP} ${_file_preamble})
   foreach(component_name IN LISTS _ML_COMPONENT_LIST)
     string(TOLOWER ${component_name} comp_lower)
+    generate_CXX_log_level(${component_name} cxx_style_log_level)
     string(CONCAT content
       "\n#define MARSLOGGING_${component_name}_ENABLE "
       "@MARSLOGGING_${component_name}_ENABLE@\n"
 
-      "#define MARSLOGGING_${component_name}_LEVEL "
-      "marsLogging::LogLevel::@MARSLOGGING_${component_name}_LEVEL@\n"
+      "#define MARSLOGGING_${component_name}_LEVEL ${cxx_style_log_level}\n"
 
       "constexpr marsLogging::ComponentConfig compConfig_${comp_lower}"
       "{MARSLOGGING_${component_name}_ENABLE,\n    "
@@ -58,4 +58,20 @@ function(marsLogging_add_component component_name)
 endfunction()
 
 
-
+function(generate_CXX_log_level component_name return_var)
+  set(level_value ${MARSLOGGING_${component_name}_LEVEL})
+  if(${level_value} IN_LIST _ML_VALID_LEVEL_NAMES)
+    set(${return_var} "marsLogging::LogLevel::@MARSLOGGING_${component_name}_LEVEL@"
+                  PARENT_SCOPE)
+  elseif(${level_value} GREATER_EQUAL 0 AND ${level_value} LESS_EQUAL 255)
+    set(${return_var}
+        "static_cast<marsLogging::LogLevel>(@MARSLOGGING_${component_name}_LEVEL@)"
+        PARENT_SCOPE)
+  else()
+    string(CONCAT error_msg
+        "\"MARSLOGGING_${component_name}_LEVEL\"=${MARSLOGGING_${component_name}_LEVEL} "
+        "is neither a valid level name as defined in _ML_VALID_LEVEL_NAMES"
+        "=[${_ML_VALID_LEVEL_NAMES}] nor a valid 8 bit unsigned integer.")
+    message(FATAL_ERROR ${error_msg})
+  endif()
+endfunction()
