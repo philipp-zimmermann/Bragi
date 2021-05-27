@@ -46,7 +46,7 @@ constexpr static auto function_LOG() noexcept
 }
 
 // using statements:
-using using_TRACE = marsLogging::Log<marsLogging::LogLevel::trace, Benchmark>;
+using using_TRACE = marsLogging::Log<static_cast<marsLogging::LogLevel>(0), Benchmark>;
 using using_WARN = marsLogging::Log<marsLogging::LogLevel::warn, Benchmark>;
 
 // define macro:
