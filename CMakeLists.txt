@@ -34,7 +34,7 @@ marsLogging_add_component(GLOBAL)  # options for component GLOBAL are set by def
 ##▁4▁CONFIGURE▁PROJECT▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 set(_ML_INCLUDE_DIR ${marsLogging_SOURCE_DIR}/include) # this will change when installing
 set(_ML_SOURCE_DIR ${marsLogging_SOURCE_DIR}/src)
-set(_ML_PRINT_CONFIG_DIR ${marsLogging_BINARY_DIR})
+set(_ML_COMPONENT_CONFIG_DIR ${marsLogging_BINARY_DIR})
 
 
 
@@ -42,7 +42,7 @@ set(_ML_PRINT_CONFIG_DIR ${marsLogging_BINARY_DIR})
 add_library(marsLogging_config INTERFACE)
 target_include_directories(marsLogging_config INTERFACE ${_ML_INCLUDE_DIR}
                                                         ${_ML_SOURCE_DIR}
-                                                        ${_ML_PRINT_CONFIG_DIR})
+                                                        ${_ML_COMPONENT_CONFIG_DIR})
 target_compile_features(marsLogging_config INTERFACE cxx_std_14)
 
 
