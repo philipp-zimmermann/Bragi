@@ -5,17 +5,17 @@
 # @brief adds options MARSLOGGING_${component_name}_ENABLE with value "true"
 # and MARSLOGGING_${component_name}_Level with value "info"
 function(marsLogging_add_component component_name)
-  cmake_parse_arguments(PARSE_ARGV 1 ${_func_prefix} "" "${_option_func_keywords}" "")
+  cmake_parse_arguments(PARSE_ARGV 1 ${_ML_ARG_PREFIX} "" "${_ML_OPTIONS_KEYWORDS}" "")
   _check_and_warn_unpares_args()
 
-  if(${${_func_prefix}_ENABLE})
-    set(enable_value ${${_func_prefix}_ENABLE})
+  if(${${_ML_ARG_PREFIX}_ENABLE})
+    set(enable_value ${${_ML_ARG_PREFIX}_ENABLE})
   else()
     set(enable_value true)
   endif()
 
-  if(${${_func_prefix}_LEVEL})
-    set(level_value ${${_func_prefix}_LEVEL})
+  if(${${_ML_ARG_PREFIX}_LEVEL})
+    set(level_value ${${_ML_ARG_PREFIX}_LEVEL})
   else()
     set(level_value info)
   endif()
@@ -43,12 +43,12 @@ endfunction()
 # Do _NOT_ set these values directly. The generated file `LoggingComponentConfig.h` might
 # otherwise not be generated correctly.
 function(marsLogging_set_options component_name)
-  cmake_parse_arguments(PARSE_ARGV 1 ${_func_prefix} "" "${_option_func_keywords}" "")
+  cmake_parse_arguments(PARSE_ARGV 1 ${_ML_ARG_PREFIX} "" "${_ML_OPTIONS_KEYWORDS}" "")
   _check_and_warn_unpares_args()
-  foreach(keyword IN LISTS _option_func_keywords)
+  foreach(keyword IN LISTS _ML_OPTIONS_KEYWORDS)
     string(TOUPPER ${component_name} comp_upper)
-    set(MARSLOGGING_${comp_upper}_${keyword} ${${_func_prefix}_${keyword}} CACHE STRING ""
-                                             FORCE)
+    set(MARSLOGGING_${comp_upper}_${keyword} ${${_ML_ARG_PREFIX}_${keyword}}
+                                             CACHE STRING "" FORCE)
   endforeach()
   generate_temp_file()
 endfunction()
@@ -84,13 +84,13 @@ string(CONCAT _file_preamble
 
 
 ###_utils_for_argument_parsing____________________________________________________________
-set(_func_prefix ARG)
-set(_option_func_keywords ENABLE LEVEL)
+set(_ML_ARG_PREFIX ARG CACHE INTERNAL "")
+set(_ML_OPTIONS_KEYWORDS ENABLE LEVEL CACHE INTERNAL "")
 
 macro(_check_and_warn_unpares_args)
-  if(${_func_prefix}_UNPARSED_ARGUMENTS)
+  if(${_ML_ARG_PREFIX}_UNPARSED_ARGUMENTS)
   message(WARNING "marsLogging_add_component was called with unparsed arguments:\
-      ${${_func_prefix}_UNPARSED_ARGUMENTS}")
+      ${${_ML_ARG_PREFIX}_UNPARSED_ARGUMENTS}")
   endif()
 endmacro()
 
