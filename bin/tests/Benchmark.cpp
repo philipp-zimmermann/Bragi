@@ -1,7 +1,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "utils/logging/Logging.h"
+#include <MarsLogging>
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -42,21 +42,21 @@ struct Benchmark{}; // for the output prefix
 template <uint8_t lvl>
 constexpr static auto function_LOG() noexcept
 {
-  return marsUtils::Log<static_cast<marsUtils::LogLevel>(lvl), Benchmark>{};
+  return marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{};
 }
 
 // using statements:
-using using_TRACE = marsUtils::Log<marsUtils::LogLevel::TRACE, Benchmark>;
-using using_WARN = marsUtils::Log<marsUtils::LogLevel::WARN, Benchmark>;
+using using_TRACE = marsLogging::Log<marsLogging::LogLevel::trace, Benchmark>;
+using using_WARN = marsLogging::Log<marsLogging::LogLevel::warn, Benchmark>;
 
 // define macro:
-#define macro_LOG(lvl) marsUtils::Log<static_cast<marsUtils::LogLevel>(lvl), Benchmark>{}
+#define macro_LOG(lvl) marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{}
 
 // function wrapper with constructor
 template <uint8_t lvl, typename msgType = std::string>
 constexpr inline auto ctor_LOG(msgType&& msg = "")
 {
-  return marsUtils::Log<static_cast<marsUtils::LogLevel>(lvl), Benchmark>{
+  return marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{
       std::forward<msgType>(msg)};
 }
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -65,11 +65,11 @@ constexpr inline auto ctor_LOG(msgType&& msg = "")
 int main()
 {
   // CONFIGURATION AT RUNTIME
-  marsUtils::configureLogging({{"type", "std_cerr"},{"color",""}});
-  // marsUtils::configureLogging({{"type", "file"}, {"path", "benchmarkResults.txt"}});
+  marsLogging::configureLogging({{"type", "std_cerr"},{"color",""}});
+  // marsLogging::configureLogging({{"type", "file"}, {"path", "benchmarkResults.txt"}});
 
 
-  marsUtils::Log<marsUtils::LogLevel::INFO, Benchmark, 0> result;
+  marsLogging::Log<marsLogging::LogLevel::info, Benchmark, 0> result;
   Timer timer;
   std::cout << "\n\n";
   result << "____________________RESULTS____________________\n";
