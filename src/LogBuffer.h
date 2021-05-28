@@ -2,8 +2,8 @@
 #define _ML_LOG_BUFFER_H_
 
 #include <boost/core/demangle.hpp>  // demabglig of typeinfo (For other implementation: https://stackoverflow.com/questions/281818/unmangling-the-result-of-stdtype-infoname)
-#include <typeinfo>                 // message prefixes from calling class
 #include <sstream>                  // Logger::logBuffer_
+#include <typeinfo>                 // message prefixes from calling class
 
 #include "LoggingTypes.h"
 
