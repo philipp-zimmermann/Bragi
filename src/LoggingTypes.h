@@ -19,7 +19,8 @@ enum class LogLevel
 
 // Passed to MARSLOGGINING_INIT to configure which logged messages within this scope
 // (component) are to be printed
-struct ComponentConfig{
+struct ComponentConfig
+{
   const bool enable;  // enables/disables printing of logged messages for this component
   const LogLevel logLevel;  // The cutoff level below which no messages are printed
 };
@@ -38,7 +39,7 @@ struct EnumHasher
     return static_cast<std::size_t>(t);
   }
 };
-
+// clang-format off
 const std::unordered_map<LogLevel, std::string, EnumHasher> coloredPrefixes{
     {LogLevel::dev,   "\x1b[35;1m[DEV]\x1b[0m   "},
     {LogLevel::error, "\x1b[31;1m[ERROR]\x1b[0m "},
@@ -56,12 +57,14 @@ const std::unordered_map<LogLevel, std::string, EnumHasher> uncoloredPrefixes{
     {LogLevel::eval,  "[EVAL]  "},
     {LogLevel::debug, "[DEBUG] "},
     {LogLevel::trace, "[TRACE] "}};
+// clang-format on
 
 
-struct NO_SOURCE_DEFINED{};  // default for mars::Logger template argument
+struct NO_SOURCE_DEFINED
+{};  // default for mars::Logger template argument
 
 
-constexpr const char* DEFAULT_LOG_FILE_PATH = "marsLOG.txt"; // default for FileLogWriter
+constexpr const char* DEFAULT_LOG_FILE_PATH = "marsLOG.txt";  // default for FileLogWriter
 
 }  // namespace marsLogging
 #endif  // _ML_LOG_LEVEL_H_
