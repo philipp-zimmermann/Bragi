@@ -1,9 +1,9 @@
 /**
  * @file Logging.tcc
  * @author Philipp Zimmermann (philipp.zimmermann@sci-track.com, zimmermp@cs.uni-kl.de)
- * @brief The underlying implementation for the marsLogging framework
- * @version 1.0
- * @date 2020-06-24
+ * @brief Implements LogBuffer and LogWriter
+ * @version 2.0.0
+ * @date 28th May 2021
  */
 
 #ifndef _LOGGING_TCC_
