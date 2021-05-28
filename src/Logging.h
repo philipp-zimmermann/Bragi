@@ -30,12 +30,12 @@ namespace marsLogging {
  *
  * @tparam logLevel             The log Level for this message
  * @tparam sourceclass          defines the source prefix
- * @tparam localLogLevelCutoff  the local cutoff level, overrides the global cutoff.
+ * @tparam localLogLevelCutoff  the local cutoff level, defaults to the global cutoff.
  * @tparam inEnabled            enables/disables printing for this message
  */
 template <LogLevel logLevel = marsLogging::LogLevel::error,
           class sourceClass = NO_SOURCE_DEFINED,
-          int16_t localLogLevelCutoff = -1,
+          LogLevel localLogLevelCutoff = MARSLOGGING_GLOBAL_LEVEL,
           bool isEnabled = true>
 class Log
 {
@@ -66,18 +66,8 @@ class Log
   // decide if this logged message is to be printed.
   constexpr static bool isPrinted() noexcept
   {
-#ifndef MARSLOGGING_GLOBAL_ENABLE
-    return false;
-#else
-    if (!isEnabled) return true;
-    if (localLogLevelCutoff >= 0){
-      return logLevel >= static_cast<LogLevel>(localLogLevelCutoff);
-    } else {
-      return logLevel >= MARSLOGGING_GLOBAL_LEVEL;
-    }
-#endif
+    return(MARSLOGGING_GLOBAL_ENABLE && isEnabled && logLevel >= localLogLevelCutoff);
   }
-
   typename std::conditional<(!isPrinted()), EmptyLogBuffer,
                             LogBuffer<logLevel, sourceClass>>::type logBuffer_;
 };

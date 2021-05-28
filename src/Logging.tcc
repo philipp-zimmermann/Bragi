@@ -292,7 +292,7 @@ class EmptyLogBuffer
     return *this;
   }
 
-  template <LogLevel, class, int16_t, bool> friend class Log;
+  template <LogLevel, class, LogLevel, bool> friend class Log;
 };
 
 
@@ -329,7 +329,7 @@ class LogBuffer
     return *this;
   }
 
-  template <LogLevel, class, int16_t, bool> friend class Log;
+  template <LogLevel, class, LogLevel, bool> friend class Log;
   std::ostringstream buffer_;
 };
 

@@ -71,7 +71,7 @@ int main()
   // marsLogging::configureLogging({{"type", "file"}, {"path", "benchmarkResults.txt"}});
 
 
-  marsLogging::Log<marsLogging::LogLevel::info, Benchmark, 0, true> result;
+  marsLogging::Log<marsLogging::LogLevel::info, Benchmark> result;
   Timer timer;
   std::cout << "\n\n";
   result << "____________________RESULTS____________________\n";
