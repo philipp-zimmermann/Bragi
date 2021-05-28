@@ -11,8 +11,8 @@
 
 #include <fstream>   // FileLogWriter
 #include <iostream>  // CerrLogWriter
-#include <mutex>     // ensure threadsafety in LogWriter
 #include <memory>    // static LogWriter object
+#include <mutex>     // ensure threadsafety in LogWriter
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -34,13 +34,15 @@ class LogWriter
       : logPrefixes_{config.find("color") != config.end() ? coloredPrefixes
                                                           : uncoloredPrefixes}
   {}
+
  protected:
   virtual inline void log(const std::string&&, const LogLevel) {}
 
   std::mutex logMutex_;
   const std::unordered_map<LogLevel, std::string, EnumHasher> logPrefixes_;
 
-  template <LogLevel logLevel, class sourceClass> friend class LogBuffer;
+  template <LogLevel logLevel, class sourceClass>
+  friend class LogBuffer;
   friend inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config);
 };
 
@@ -49,6 +51,7 @@ class CerrLogWriter : public LogWriter
 {
  public:
   ~CerrLogWriter() = default;
+
  private:
   CerrLogWriter() = delete;
   CerrLogWriter(const CerrLogWriter& other) = delete;
@@ -56,32 +59,31 @@ class CerrLogWriter : public LogWriter
   CerrLogWriter operator=(CerrLogWriter&& other) = delete;
   CerrLogWriter operator=(const CerrLogWriter& other) = delete;
 
-  explicit CerrLogWriter(const LoggingConfig& config)
-      : LogWriter{config}
-  {}
+  explicit CerrLogWriter(const LoggingConfig& config) : LogWriter{config} {}
 
   inline void log(const std::string&& message, const LogLevel level) override
   {
     std::lock_guard<std::mutex> lock(logMutex_);
 
     const auto prefixSearch = logPrefixes_.find(level);
-    if (prefixSearch != logPrefixes_.end()) {
+    if (prefixSearch != logPrefixes_.end())
+    {
       std::cerr << prefixSearch->second << message << '\n';
     }
     else
     {
-      if (logPrefixes_ == coloredPrefixes) {
-        std::cerr << "\x1b[35;1m[CUSTOM:\x1b[0m" << "\x1b[35;1m"
-                  << std::to_string(static_cast<uint8_t>(level)) << "]\x1b[0m "
-                  << message << '\n';
-      } else {
-        std::cerr << "[CUSTOM:" << std::to_string(static_cast<uint8_t>(level))
-                  << message << '\n';
-      }
+      if (logPrefixes_ == coloredPrefixes)
+        std::cerr << "\x1b[35;1m[CUSTOM:\x1b[0m"
+                  << "\x1b[35;1m" << std::to_string(static_cast<uint8_t>(level))
+                  << "]\x1b[0m " << message << '\n';
+      else
+        std::cerr << "[CUSTOM:" << std::to_string(static_cast<uint8_t>(level)) << message
+                  << '\n';
     }
   }
 
-  template <LogLevel logLevel, class sourceClass> friend class LogBuffer;
+  template <LogLevel logLevel, class sourceClass>
+  friend class LogBuffer;
   friend inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config);
 };
 
@@ -112,16 +114,15 @@ class FileLogWriter : public LogWriter
     std::lock_guard<std::mutex> lock(logMutex_);
 
     const auto prefixSearch = logPrefixes_.find(level);
-    if (prefixSearch != logPrefixes_.end()) {
+    if (prefixSearch != logPrefixes_.end())
       file_ << prefixSearch->second << message << '\n';
-    } else {
-      file_ << "[CUSTOM:" << std::to_string(static_cast<uint8_t>(level))
-            << message << '\n';
-    }
+    else
+      file_ << "[CUSTOM:" << std::to_string(static_cast<uint8_t>(level)) << message
+            << '\n';
     file_.flush();
   }
- private:
 
+ private:
   const char* fileName_;
   std::ofstream file_;
 };
@@ -157,15 +158,19 @@ inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config)
   if (type->second == "std_cerr")
   {
     std::unique_ptr<CerrLogWriter> cerrLogWriter(new CerrLogWriter{config});
-    if(MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug) {
-      cerrLogWriter->log(std::move(creationInfo), LogLevel::debug); }
+    if (MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug)
+    {
+      cerrLogWriter->log(std::move(creationInfo), LogLevel::debug);
+    }
     return cerrLogWriter;
   }
   else if (type->second == "file")
   {
     auto fileLogWriter = std::make_unique<FileLogWriter>(config);
-    if(MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug) {
-      fileLogWriter->log(std::move(creationInfo), LogLevel::debug); }
+    if (MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug)
+    {
+      fileLogWriter->log(std::move(creationInfo), LogLevel::debug);
+    }
     return fileLogWriter;
   }
   else
@@ -187,5 +192,5 @@ inline LogWriter& getLogWriter(const LoggingConfig& config = {{"type", "std_cerr
 }
 
 
-}  // namespace mars
+}  // namespace marsLogging
 #endif
