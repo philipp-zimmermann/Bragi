@@ -45,7 +45,7 @@ static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
 #endif
 }
 
-#include "Logging.tcc"
+#include "LogWriter.h"
 #include "LogBuffer.h"
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
