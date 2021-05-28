@@ -10,20 +10,20 @@
 struct Timer
 {
   inline void start(){ startPoint_ = std::chrono::high_resolution_clock::now(); }
-  inline uint64_t stop()
+  inline auto stop()
   {
     const auto endPoint = std::chrono::high_resolution_clock::now();
-    const uint64_t start =
+    const auto start =
         std::chrono::time_point_cast<std::chrono::microseconds>(startPoint_)
             .time_since_epoch()
             .count();
 
-    const uint64_t end =
+    const auto end =
         std::chrono::time_point_cast<std::chrono::microseconds>(endPoint)
             .time_since_epoch()
             .count();
 
-    const uint64_t duration = end - start;
+    const auto duration = end - start;
     //double ms = duration * 0.001;
     //std::cout << duration << "µs (" << ms << ")\n";
     return duration;
@@ -81,8 +81,8 @@ int main()
   result << "\nBaseline: timing an empty loop:\n";
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {}
-  uint64_t duration = timer.stop();
-  result << "BASELINE: " << duration << "µs (" << duration*0.001 << "ms)\n";
+  auto duration = timer.stop();
+  result << "BASELINE: " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -93,14 +93,14 @@ int main()
     function_LOG<103>() << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "HEAP LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "HEAP LOGGING: " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     function_LOG<100>() << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "HEAP CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "HEAP CUTOFF:  " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -111,14 +111,14 @@ int main()
     function_LOG<103>() << i << 5;
   }
   duration = timer.stop();
-  result << "STACK LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "STACK LOGGING: " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     function_LOG<100>() << i << 5;
   }
   duration = timer.stop();
-  result << "STACK CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "STACK CUTOFF:  " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -129,14 +129,14 @@ int main()
     ctor_LOG<103>("this is a message with a long string. I am afraid...");
   }
   duration = timer.stop();
-  result << "CTOR LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "CTOR LOGGING: " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     ctor_LOG<100>("this is a message with a long string. I am afraid...");
   }
   duration = timer.stop();
-  result << "CTOR CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "CTOR CUTOFF:  " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -147,14 +147,14 @@ int main()
     using_WARN() << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "using LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "using LOGGING: " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     using_TRACE() << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "using CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "using CUTOFF:  " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -165,14 +165,14 @@ int main()
     macro_LOG(103) << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "#define LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "#define LOGGING: " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     macro_LOG(100) << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "#define CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "#define CUTOFF:  " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -183,14 +183,14 @@ int main()
     LOG_FUNC_DETAIL(eval) << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "HEAP LOGGING: " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "HEAP LOGGING: " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     LOG_DEBUG << "this is a message with a long string. I am afraid...";
   }
   duration = timer.stop();
-  result << "HEAP CUTOFF:  " << duration << "µs (" << duration*0.001 << "ms)\n";
+  result << "HEAP CUTOFF:  " << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
