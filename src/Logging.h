@@ -73,7 +73,7 @@ class Log
     if (localLogLevelCutoff >= 0){
       return logLevel >= static_cast<LogLevel>(localLogLevelCutoff);
     } else {
-      return logLevel >= GLOBAL_LOG_LEVEL_CUTOFF;
+      return logLevel >= MARSLOGGING_GLOBAL_LEVEL;
     }
 #endif
   }

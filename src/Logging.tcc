@@ -17,7 +17,7 @@
 #include <sstream>                  // Log::buffer_
 #include <typeinfo>                 // message prefixes from calling class
 #include <unordered_map>            // log level prefixes (un-/colored) and LoggingConfig
-
+#include <type_traits>
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -53,17 +53,11 @@ namespace marsLogging {
 
 using LoggingConfig = std::unordered_map<std::string, std::string>;
 
-// GLOBAL_LOG_LEVEL_CUTOFF
 #if defined(MARSLOGGING_GLOBAL_LEVEL)
-DISABLE_WARNING_PUSH
-DISABLE_WARNING_TYPE_LIMITS
-constexpr LogLevel GLOBAL_LOG_LEVEL_CUTOFF = static_cast<LogLevel>(MARSLOGGING_GLOBAL_LEVEL);
-// static_assert(0 <= MARSLOGGING_GLOBAL_LEVEL &&
-//                   MARSLOGGING_GLOBAL_LEVEL <= std::numeric_limits<uint8_t>::max(),
-//               "The value of MARSLOGGING_GLOBAL_LEVEL is not in range of uint8_t.");
-DISABLE_WARNING_POP
+static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), LogLevel>::value,
+              "MARSLOGGING_GLOBAL_LEVEL not of type marsLogging::Loglevel.");
 #else
-constexpr LogLevel GLOBAL_LOG_LEVEL_CUTOFF = LogLevel::info;
+#define MARSLOGGING_GLOBAL_LEVEL LogLevel::info
 #endif
 
 
@@ -224,15 +218,15 @@ class FileLogWriter : public LogWriter
 inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config)
 {
   using namespace std::string_literals;
-  const auto logLevelPrefix{uncoloredPrefixes.find(GLOBAL_LOG_LEVEL_CUTOFF)};
+  const auto logLevelPrefix{uncoloredPrefixes.find(MARSLOGGING_GLOBAL_LEVEL)};
   const std::string creationInfo =
       "Global log level = "s +
       (logLevelPrefix != uncoloredPrefixes.end()
            ? logLevelPrefix->second
-           : "[" + std::to_string(static_cast<uint8_t>(GLOBAL_LOG_LEVEL_CUTOFF)) + "]");
+           : "[" + std::to_string(static_cast<uint8_t>(MARSLOGGING_GLOBAL_LEVEL)) + "]");
 
   auto printConfigError = [] {
-    if (GLOBAL_LOG_LEVEL_CUTOFF <= LogLevel::error)
+    if (MARSLOGGING_GLOBAL_LEVEL <= LogLevel::error)
     {
       std::cerr << "\x1b[31;1m[ERROR]\x1b[0m "
                 << "[configureLogging] found no valid type for LogWriter,"
@@ -274,7 +268,6 @@ inline LogWriter& getLogWriter(const LoggingConfig& config = {{"type", "std_cerr
   static std::unique_ptr<LogWriter> logger{createLogWriter(config)};
   return *logger;
 }
-
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
