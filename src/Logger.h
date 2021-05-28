@@ -25,7 +25,7 @@
 #ifndef _LOGGING_H_
 #define _LOGGING_H_
 
-#include <type_traits>              // for validating types of global LEVEL and ENABLE
+#include <type_traits>  // for validating types of global LEVEL and ENABLE
 
 #include "LoggingTypes.h"
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -45,10 +45,12 @@ static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
 #else
 #define MARSLOGGING_GLOBAL_ENABLE true
 #endif
-}
+}  // namespace marsLogging
 
+// clang-format off
 #include "LogWriter.h"
 #include "LogBuffer.h"
+// clang-format on
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // log messages
