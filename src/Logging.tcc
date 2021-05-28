@@ -14,19 +14,17 @@
 #include <iostream>                 // CerrLogWriter
 #include <memory>                   // static LogWriter object
 #include <mutex>                    // ensure threadsafety in LogWriter
-#include <sstream>                  // Log::buffer_
+#include <sstream>                  // Log::logBuffer_
 #include <typeinfo>                 // message prefixes from calling class
-#include <unordered_map>            // log level prefixes (un-/colored) and LoggingConfig
 #include <type_traits>              // for validating types of global LEVEL and ENABLE
 
+#include "LoggingTypes.h"
 
 namespace marsLogging {
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// types and constants
+// type checks or setting of default values
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-using LoggingConfig = std::unordered_map<std::string, std::string>;
 
 #if defined(MARSLOGGING_GLOBAL_LEVEL)
 static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), LogLevel>::value,
@@ -41,41 +39,6 @@ static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
 #else
 #define MARSLOGGING_GLOBAL_LEVEL true
 #endif
-
-// log level prefixes:
-struct EnumHasher
-{
-  template <typename T>
-  std::size_t operator()(T t) const
-  {
-    return static_cast<std::size_t>(t);
-  }
-};
-
-const std::unordered_map<LogLevel, std::string, EnumHasher> coloredPrefixes{
-    {LogLevel::dev,   "\x1b[35;1m[DEV]\x1b[0m   "},
-    {LogLevel::error, "\x1b[31;1m[ERROR]\x1b[0m "},
-    {LogLevel::warn,  "\x1b[33;1m[WARN]\x1b[0m  "},
-    {LogLevel::info,  "\x1b[32;1m[INFO]\x1b[0m  "},
-    {LogLevel::eval,  "\x1b[36;1m[EVAL]\x1b[0m  "},
-    {LogLevel::debug, "\x1b[34;1m[DEBUG]\x1b[0m "},
-    {LogLevel::trace, "\x1b[37;1m[TRACE]\x1b[0m "}};
-
-const std::unordered_map<LogLevel, std::string, EnumHasher> uncoloredPrefixes{
-    {LogLevel::dev,   "[DEV]   "},
-    {LogLevel::error, "[ERROR] "},
-    {LogLevel::warn,  "[WARN]  "},
-    {LogLevel::info,  "[INFO]  "},
-    {LogLevel::eval,  "[EVAL]  "},
-    {LogLevel::debug, "[DEBUG] "},
-    {LogLevel::trace, "[TRACE] "}};
-
-
-// default for mars::Log template argument
-struct NO_SOURCE_DEFINED{};
-// default filepath  for FileLogWriter
-constexpr const char* DEFAULT_LOG_FILE_PATH = "marsLOG.txt";
-
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -167,8 +130,6 @@ class FileLogWriter : public LogWriter
   FileLogWriter(FileLogWriter&& other) = delete;
   FileLogWriter operator=(FileLogWriter&& other) = delete;
   FileLogWriter operator=(const FileLogWriter& other) = delete;
-
-
 
 
   inline void log(const std::string&& message, const LogLevel level) override
