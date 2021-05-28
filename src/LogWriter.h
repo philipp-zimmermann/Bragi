@@ -9,14 +9,10 @@
 #ifndef _LOGGING_TCC_
 #define _LOGGING_TCC_
 
-#include <boost/core/demangle.hpp>  // demabglig of typeinfo (For other implementation: https://stackoverflow.com/questions/281818/unmangling-the-result-of-stdtype-infoname)
-#include <fstream>                  // FileLogWriter
-#include <iostream>                 // CerrLogWriter
-#include <memory>                   // static LogWriter object
-#include <mutex>                    // ensure threadsafety in LogWriter
-#include <sstream>                  // Logger::logBuffer_
-#include <typeinfo>                 // message prefixes from calling class
-#include <type_traits>              // for validating types of global LEVEL and ENABLE
+#include <fstream>   // FileLogWriter
+#include <iostream>  // CerrLogWriter
+#include <mutex>     // ensure threadsafety in LogWriter
+#include <memory>    // static LogWriter object
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

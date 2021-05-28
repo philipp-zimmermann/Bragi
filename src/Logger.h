@@ -25,6 +25,8 @@
 #ifndef _LOGGING_H_
 #define _LOGGING_H_
 
+#include <type_traits>              // for validating types of global LEVEL and ENABLE
+
 #include "LoggingTypes.h"
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // type checks or setting of default values
