@@ -28,22 +28,20 @@ namespace marsLogging {
  * Message behaviour is defined by the template parameter
  * Message body is provided to the system via constructor argument or stream operator<<.
  *
- * @tparam logLevel             The log Level for this message
- * @tparam sourceclass          defines the source prefix
- * @tparam localLogLevelCutoff  the local cutoff level, defaults to the global cutoff.
- * @tparam inEnabled            enables/disables printing for this message
+ * @tparam msgLevel          The log Level for this message
+ * @tparam sourceclass       defines the source prefix
+ * @tparam localCutoffLevel  the local cutoff level, defaults to the global cutoff.
+ * @tparam localEnable       enables/disables printing for this message
  */
-template <LogLevel logLevel = marsLogging::LogLevel::error,
+template <LogLevel msgLevel = marsLogging::LogLevel::error,
           class sourceClass = NO_SOURCE_DEFINED,
-          LogLevel localLogLevelCutoff = MARSLOGGING_GLOBAL_LEVEL,
-          bool isEnabled = true>
+          LogLevel localCutoffLevel = MARSLOGGING_GLOBAL_LEVEL, bool localEnable = true>
 class Log
 {
  public:
   constexpr Log() noexcept : logBuffer_{} {}
   constexpr Log(Log&& other) = default;
-
-  Log (const Log& other) = delete;
+  Log(const Log& other) = delete;
   Log& operator=(const Log& other) = delete;
   Log& operator=(Log&& other) = delete;
 
@@ -54,7 +52,7 @@ class Log
   }
 
   template <typename msgType>
-  constexpr Log<logLevel, sourceClass, localLogLevelCutoff, isEnabled>& operator<<(
+  constexpr Log<msgLevel, sourceClass, localCutoffLevel, localEnable>& operator<<(
       msgType&& message)
   {
     logBuffer_ << std::forward<msgType>(message);
@@ -63,13 +61,15 @@ class Log
 
 
  private:
-  // decide if this logged message is to be printed.
   constexpr static bool isPrinted() noexcept
   {
-    return(MARSLOGGING_GLOBAL_ENABLE && isEnabled && logLevel >= localLogLevelCutoff);
+    return (MARSLOGGING_GLOBAL_ENABLE && localEnable && msgLevel >= localCutoffLevel);
   }
-  typename std::conditional<(!isPrinted()), EmptyLogBuffer,
-                            LogBuffer<logLevel, sourceClass>>::type logBuffer_;
+  // determines if this logged message is to be printed, if so the type of logBuffer_ is
+  // LogBuffer, otherwise is is an EmptyLogBuffer this enables zero computation cost with
+  // O3 for not printed messages
+  typename std::conditional<isPrinted(), LogBuffer<msgLevel, sourceClass>,
+                            EmptyLogBuffer>::type logBuffer_;
 };
 
 
