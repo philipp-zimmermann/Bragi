@@ -22,10 +22,28 @@
  * @date 28th May 2021
  */
 
-
 #ifndef _LOGGING_H_
 #define _LOGGING_H_
 
+#include "LoggingTypes.h"
+//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// type checks or setting of default values
+//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+namespace marsLogging {
+#if defined(MARSLOGGING_GLOBAL_LEVEL)
+static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), LogLevel>::value,
+              "MARSLOGGING_GLOBAL_LEVEL is not of type marsLogging::Loglevel.");
+#else
+#define MARSLOGGING_GLOBAL_LEVEL LogLevel::info
+#endif
+
+#if defined(MARSLOGGING_GLOBAL_ENABLE)
+static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
+              "MARSLOGGING_GLOBAL_ENABLE is not of type bool.");
+#else
+#define MARSLOGGING_GLOBAL_ENABLE true
+#endif
+}
 
 #include "Logging.tcc"
 #include "LogBuffer.h"

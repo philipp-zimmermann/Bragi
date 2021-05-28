@@ -18,32 +18,11 @@
 #include <typeinfo>                 // message prefixes from calling class
 #include <type_traits>              // for validating types of global LEVEL and ENABLE
 
-#include "LoggingTypes.h"
-
-namespace marsLogging {
-
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// type checks or setting of default values
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-#if defined(MARSLOGGING_GLOBAL_LEVEL)
-static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), LogLevel>::value,
-              "MARSLOGGING_GLOBAL_LEVEL is not of type marsLogging::Loglevel.");
-#else
-#define MARSLOGGING_GLOBAL_LEVEL LogLevel::info
-#endif
-
-#if defined(MARSLOGGING_GLOBAL_ENABLE)
-static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
-              "MARSLOGGING_GLOBAL_ENABLE is not of type bool.");
-#else
-#define MARSLOGGING_GLOBAL_LEVEL true
-#endif
-
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // LogWriter implementations
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+namespace marsLogging {
 
 class LogWriter
 {
