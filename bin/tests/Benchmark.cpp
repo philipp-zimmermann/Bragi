@@ -42,21 +42,21 @@ struct Benchmark{}; // for the output prefix
 template <uint8_t lvl>
 constexpr static auto function_LOG() noexcept
 {
-  return marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{};
+  return marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{};
 }
 
 // using statements:
-using using_TRACE = marsLogging::Log<marsLogging::LogLevel::trace, Benchmark>;
-using using_WARN = marsLogging::Log<marsLogging::LogLevel::warn, Benchmark>;
+using using_TRACE = marsLogging::Logger<marsLogging::LogLevel::trace, Benchmark>;
+using using_WARN = marsLogging::Logger<marsLogging::LogLevel::warn, Benchmark>;
 
 // define macro:
-#define macro_LOG(lvl) marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{}
+#define macro_LOG(lvl) marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{}
 
 // function wrapper with constructor
 template <uint8_t lvl, typename msgType = std::string>
 constexpr inline auto ctor_LOG(msgType&& msg = "")
 {
-  return marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{
+  return marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{
       std::forward<msgType>(msg)};
 }
 
@@ -71,7 +71,7 @@ int main()
   // marsLogging::configureLogging({{"type", "file"}, {"path", "benchmarkResults.txt"}});
 
 
-  marsLogging::Log<marsLogging::LogLevel::info, Benchmark> result;
+  marsLogging::Logger<marsLogging::LogLevel::info, Benchmark> result;
   Timer timer;
   std::cout << "\n\n";
   result << "____________________RESULTS____________________\n";

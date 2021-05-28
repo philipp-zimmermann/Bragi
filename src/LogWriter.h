@@ -14,7 +14,7 @@
 #include <iostream>                 // CerrLogWriter
 #include <memory>                   // static LogWriter object
 #include <mutex>                    // ensure threadsafety in LogWriter
-#include <sstream>                  // Log::logBuffer_
+#include <sstream>                  // Logger::logBuffer_
 #include <typeinfo>                 // message prefixes from calling class
 #include <type_traits>              // for validating types of global LEVEL and ENABLE
 

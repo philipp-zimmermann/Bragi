@@ -10,7 +10,7 @@ struct AsyncTest{};
 template <uint8_t lvl>
 constexpr auto asyncLog()
 {
-  return marsLogging::Log<static_cast<marsLogging::LogLevel>(lvl), AsyncTest>{};
+  return marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), AsyncTest>{};
 }
 
 MARSLOGGINING_INIT(AsyncTest, compConfig_threadsafety)
@@ -87,7 +87,7 @@ void work()
 
 int main()
 {
-  marsLogging::Log<marsLogging::LogLevel::info>()
+  marsLogging::Logger<marsLogging::LogLevel::info>()
       << "––––––––––––––––––––––––––Async–Test––––––––––––––––––––––––––\n";
   std::vector<std::future<void>> results;
   for (size_t i = 0; i < 5; ++i)  // starts 5 threads

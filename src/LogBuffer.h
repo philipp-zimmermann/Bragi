@@ -24,7 +24,7 @@ class EmptyLogBuffer
   }
 
   template <LogLevel, class, LogLevel, bool>
-  friend class Log;
+  friend class Logger;
 };
 
 
@@ -59,7 +59,7 @@ class LogBuffer
   }
 
   template <LogLevel, class, LogLevel, bool>
-  friend class Log;
+  friend class Logger;
   std::ostringstream buffer_;
 };
 

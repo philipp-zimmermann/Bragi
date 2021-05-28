@@ -58,7 +58,7 @@ const std::unordered_map<LogLevel, std::string, EnumHasher> uncoloredPrefixes{
     {LogLevel::trace, "[TRACE] "}};
 
 
-struct NO_SOURCE_DEFINED{};  // default for mars::Log template argument
+struct NO_SOURCE_DEFINED{};  // default for mars::Logger template argument
 
 
 constexpr const char* DEFAULT_LOG_FILE_PATH = "marsLOG.txt"; // default for FileLogWriter

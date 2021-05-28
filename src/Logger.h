@@ -5,11 +5,11 @@
  * included directly, use the header `MarsLogging` instead.
  *
  * MarsLogging is logically structured as followes:
- * 1. Messages are logged with instances of class Log. Messages can be passed to Log via
- *    its constructor or operator<<
- * 2. Each Log instance buffers all messages passed to it with its member logBuffer_
- * 3. Log::isPrinted() decides if buffered messages to this Log-instance should be printed
- * 4. If the messages are to be printed it is done, when the respective Log instance is
+ * 1. Messages are logged with instances of class Logger. Messages can be passed to Logger
+ *    via its constructor or operator<<
+ * 2. Each Logger instance buffers all messages passed to it with its member logBuffer_
+ * 3. Logger::isPrinted() decides if buffered messages to this instance should be printed
+ * 4. If the messages are to be printed it is done, when the respective Logger instance is
  *    destroyed (via the destructor of logBuffer_)
  * 5. The LogBuffer appends all buffered messages to create a single message
  *    (let's call it "print_message" for this explanation)
@@ -66,23 +66,23 @@ namespace marsLogging {
 template <LogLevel msgLevel = marsLogging::LogLevel::error,
           class sourceClass = NO_SOURCE_DEFINED,
           LogLevel localCutoffLevel = MARSLOGGING_GLOBAL_LEVEL, bool localEnable = true>
-class Log
+class Logger
 {
  public:
-  constexpr Log() noexcept : logBuffer_{} {}
-  constexpr Log(Log&& other) = default;
-  Log(const Log& other) = delete;
-  Log& operator=(const Log& other) = delete;
-  Log& operator=(Log&& other) = delete;
+  constexpr Logger() noexcept : logBuffer_{} {}
+  constexpr Logger(Logger&& other) = default;
+  Logger(const Logger& other) = delete;
+  Logger& operator=(const Logger& other) = delete;
+  Logger& operator=(Logger&& other) = delete;
 
   template <typename msgType>
-  constexpr explicit Log(msgType&& message) : logBuffer_{}
+  constexpr explicit Logger(msgType&& message) : logBuffer_{}
   {
     logBuffer_ << std::forward<msgType>(message);
   }
 
   template <typename msgType>
-  constexpr Log<msgLevel, sourceClass, localCutoffLevel, localEnable>& operator<<(
+  constexpr Logger<msgLevel, sourceClass, localCutoffLevel, localEnable>& operator<<(
       msgType&& message)
   {
     logBuffer_ << std::forward<msgType>(message);

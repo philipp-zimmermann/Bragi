@@ -1,26 +1,26 @@
 #ifndef _ML_UTILITY_MACROS_H_
 #define _ML_UTILITY_MACROS_H_
 
-#define _ML_INIT_LOCAL(sourceClass, localConfig)                             \
-  template <marsLogging::LogLevel messageLevel>                              \
-  constexpr static inline auto log_message() noexcept                        \
-  {                                                                          \
-    return marsLogging::Log<messageLevel, sourceClass, localConfig.logLevel, \
-                            localConfig.enable>{};                           \
+#define _ML_INIT_LOCAL(sourceClass, localConfig)                                \
+  template <marsLogging::LogLevel messageLevel>                                 \
+  constexpr static inline auto log_message() noexcept                           \
+  {                                                                             \
+    return marsLogging::Logger<messageLevel, sourceClass, localConfig.logLevel, \
+                               localConfig.enable>{};                           \
   }
 
-#define _ML_INIT_GLOBAL(sourceClass)                      \
-  template <marsLogging::LogLevel messageLevel>           \
-  constexpr static inline auto log_message() noexcept     \
-  {                                                       \
-    return marsLogging::Log<messageLevel, sourceClass>{}; \
+#define _ML_INIT_GLOBAL(sourceClass)                         \
+  template <marsLogging::LogLevel messageLevel>              \
+  constexpr static inline auto log_message() noexcept        \
+  {                                                          \
+    return marsLogging::Logger<messageLevel, sourceClass>{}; \
   }
 
 #define _ML_INIT_DEFAULT()                            \
   template <marsLogging::LogLevel messageLevel>       \
   constexpr static inline auto log_message() noexcept \
   {                                                   \
-    return marsLogging::Log<messageLevel>{};          \
+    return marsLogging::Logger<messageLevel>{};       \
   }
 
 #define _ML_FUNC_CHOOSER(_f1, _f2, _f3, ...) _f3

@@ -76,7 +76,7 @@ namespace marsLogging {
  * @brief Runtime compilation-unit-wide configuration for the marsLogging framework.
  *
  * This should be called once, before any LOG_ macro is executed (In detail: before any
- * marsLogging::Log instance is created). When this function is not called, the default
+ * marsLogging::Logger instance is created). When this function is not called, the default
  * value is used as defined by marsLogging::getLogWriter(), which is: {{"type",
  * "std_cerr"},{"color", ""}}
  *
