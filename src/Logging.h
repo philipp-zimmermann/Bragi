@@ -1,14 +1,25 @@
 /**
  * @file Logging.h
  * @author Philipp Zimmermann (philipp.zimmermann@sci-track.com, zimmermp@cs.uni-kl.de)
- * @brief marsLogging framework: This header provides the complete interface.
- * See the README and examples for detailled explanations and guidance.
+ * @brief marsLogging framework: This header provides the implementation. It should not be
+ * included directly, use the header `MarsLogging` instead.
  *
- * Note that the Header "LoggingImpl.h" must be accessible from here, since it provides
- * the underlying implementation.
+ * MarsLogging is logically structured as followes:
+ * 1. Messages are logged with instances of class Log. Messages can be passed to Log via
+ *    its constructor or operator<<
+ * 2. Each Log instance buffers all messages passed to it with its member logBuffer_
+ * 3. Log::isPrinted() decides if buffered messages to this Log-instance should be printed
+ * 4. If the messages are to be printed it is done, when the respective Log instance is
+ *    destroyed (via the destructor of logBuffer_)
+ * 5. The LogBuffer appends all buffered messages to create a single message
+ *    (let's call it "print_message" for this explanation)
+ * 6. The LogBuffer destructor prints the buffered messages by passing the print_message
+ *    to the LogWriter singleton object.
+ * 7. By configuring the LogWriter instance (via configureLogging()) the destination
+ *    (file or console) and style (colored or uncolored) can be selected.
  *
- * @version 1.0
- * @date 2020-06-24
+ * @version 2.0.0
+ * @date 28th May 2021
  */
 
 
