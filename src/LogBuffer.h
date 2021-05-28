@@ -1,3 +1,11 @@
+/**
+ * @file LogWBuffer.tcc
+ * @author Philipp Zimmermann (philipp.zimmermann@sci-track.com, zimmermp@cs.uni-kl.de)
+ * @brief Implements LogBuffer
+ * @version 2.0.0
+ * @date 28th May 2021
+ */
+
 #ifndef _ML_LOG_BUFFER_H_
 #define _ML_LOG_BUFFER_H_
 

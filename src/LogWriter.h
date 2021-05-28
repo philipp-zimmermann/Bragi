@@ -1,7 +1,7 @@
 /**
- * @file Logging.tcc
+ * @file LogWriter.tcc
  * @author Philipp Zimmermann (philipp.zimmermann@sci-track.com, zimmermp@cs.uni-kl.de)
- * @brief Implements LogBuffer and LogWriter
+ * @brief Implements LogWriter
  * @version 2.0.0
  * @date 28th May 2021
  */

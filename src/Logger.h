@@ -1,5 +1,5 @@
 /**
- * @file Logging.h
+ * @file Logger.h
  * @author Philipp Zimmermann (philipp.zimmermann@sci-track.com, zimmermp@cs.uni-kl.de)
  * @brief marsLogging framework: This header provides the implementation. It should not be
  * included directly, use the header `MarsLogging` instead.
