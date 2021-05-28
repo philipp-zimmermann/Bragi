@@ -36,7 +36,7 @@ static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), LogLevel>::value,
 #endif
 
 #if defined(MARSLOGGING_GLOBAL_ENABLE)
-static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), bool>::value,
+static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
               "MARSLOGGING_GLOBAL_ENABLE is not of type bool.");
 #else
 #define MARSLOGGING_GLOBAL_LEVEL true
