@@ -4,14 +4,13 @@
 // clang-format off
 #include "LoggingTypes.h"            // defines types used for marsLogging
 #include "LoggingComponentConfig.h"  // defines global/component-wide levels and enables
-#include "Logging.h"                 // implementation for the marsLogging functionalities
+#include "Logger.h"                  // implementation for the marsLogging functionalities
+#include "LoggingUtilityMacros.h"    // defines _ML_MACRO_CHOOSER and its dependencies
 // clang-format on
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // PREREQUISITE FOR LOG_ MACROS
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-#include "LoggingUtilityMacros.h"  // defines _ML_MACRO_CHOOSER and its dependencies
-
 /**
  * @brief defines the function log_message() on which the LOG_ macros depend.
  *    Usage: MARSLOGGINING_INIT([ClassName[, compConfig_<compName>]])
