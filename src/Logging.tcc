@@ -17,7 +17,7 @@
 #include <sstream>                  // Log::buffer_
 #include <typeinfo>                 // message prefixes from calling class
 #include <unordered_map>            // log level prefixes (un-/colored) and LoggingConfig
-#include <type_traits>
+#include <type_traits>              // for validating types of global LEVEL and ENABLE
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -55,11 +55,17 @@ using LoggingConfig = std::unordered_map<std::string, std::string>;
 
 #if defined(MARSLOGGING_GLOBAL_LEVEL)
 static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), LogLevel>::value,
-              "MARSLOGGING_GLOBAL_LEVEL not of type marsLogging::Loglevel.");
+              "MARSLOGGING_GLOBAL_LEVEL is not of type marsLogging::Loglevel.");
 #else
 #define MARSLOGGING_GLOBAL_LEVEL LogLevel::info
 #endif
 
+#if defined(MARSLOGGING_GLOBAL_ENABLE)
+static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), bool>::value,
+              "MARSLOGGING_GLOBAL_ENABLE is not of type bool.");
+#else
+#define MARSLOGGING_GLOBAL_LEVEL true
+#endif
 
 // log level prefixes:
 struct EnumHasher
