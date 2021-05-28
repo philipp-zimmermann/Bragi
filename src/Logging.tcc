@@ -20,31 +20,6 @@
 #include <type_traits>              // for validating types of global LEVEL and ENABLE
 
 
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// for disabling warnings
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-#if defined(_MSC_VER)
-    #define DISABLE_WARNING_PUSH           __pragma(warning( push ))
-    #define DISABLE_WARNING_POP            __pragma(warning( pop ))
-    #define DISABLE_WARNING(warningNumber) __pragma(warning( disable : warningNumber ))
-    #define DISABLE_WARNING_TYPE_LIMITS
-#elif defined(__GNUC__) || defined(__clang__)
-    #define DO_PRAGMA(X) _Pragma(#X)
-    #define DISABLE_WARNING_PUSH           DO_PRAGMA(GCC diagnostic push)
-    #define DISABLE_WARNING_POP            DO_PRAGMA(GCC diagnostic pop)
-    #define DISABLE_WARNING(warningName)   DO_PRAGMA(GCC diagnostic ignored #warningName)
-
-    #define DISABLE_WARNING_TYPE_LIMITS    DISABLE_WARNING(-Wtype-limits)
-#else
-    #define DISABLE_WARNING_PUSH
-    #define DISABLE_WARNING_POP
-    #define DISABLE_WARNING_UNREFERENCED_FORMAL_PARAMETER
-    #define DISABLE_WARNING_TYPE_LIMITS
-#endif
-
-
-
 namespace marsLogging {
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
