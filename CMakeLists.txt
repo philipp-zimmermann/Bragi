@@ -23,9 +23,9 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 
 ##▁3▁CONFIGURE▁PROJECT▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-set(_ML_INCLUDE_DIR ${marsLogging_SOURCE_DIR}/include) # this will change when installing
-set(_ML_SOURCE_DIR ${marsLogging_SOURCE_DIR}/src)
-set(_ML_COMPONENT_CONFIG_DIR ${marsLogging_BINARY_DIR})
+set(_ML_INCLUDE_DIR ${marsLogging_SOURCE_DIR}/include CACHE INTERNAL "") # this will change when installing
+set(_ML_SOURCE_DIR ${marsLogging_SOURCE_DIR}/src CACHE INTERNAL "")
+set(_ML_COMPONENT_CONFIG_DIR ${marsLogging_BINARY_DIR} CACHE INTERNAL "")
 
 
 
