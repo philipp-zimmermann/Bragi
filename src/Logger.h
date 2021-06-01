@@ -2,9 +2,9 @@
  * @file Logger.h
  * @author Philipp Zimmermann (philipp.zimmermann@sci-track.com, zimmermp@cs.uni-kl.de)
  * @brief marsLogging framework: This header provides the implementation. It should not be
- * included directly, use the header `MarsLogging` instead.
+ * included directly, use the header `marsLogging` instead.
  *
- * MarsLogging is logically structured as followes:
+ * marsLogging is logically structured as followes:
  * 1. Messages are logged with instances of class Logger. Messages can be passed to Logger
  *    via its constructor or operator<<
  * 2. Each Logger instance buffers all messages passed to it with its member logBuffer_

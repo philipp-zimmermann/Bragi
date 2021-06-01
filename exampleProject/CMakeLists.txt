@@ -5,10 +5,10 @@ project(loggingExample)
 
 ##▁1▁GET▁THE▁MARSLOGGING▁LIBRARY▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 #                  ↓ the dir to the marsLogging CMakeLists.txt file
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/.. MarsLogging)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/.. marsLogging)
 #                                             ↑ explicitly defined binary sub-directory
 
-# Note: As soon as MarsLogging has the necessary functionalities this can be substuituted
+# Note: As soon as marsLogging has the necessary functionalities this can be substuituted
 # with: `find_package(marsLogging)`
 
 

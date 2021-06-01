@@ -1,4 +1,4 @@
-#include <MarsLogging>
+#include <marsLogging>
 #include <string>
 #include <iostream>
 #include <thread>

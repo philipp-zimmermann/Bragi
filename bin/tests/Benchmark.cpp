@@ -1,7 +1,7 @@
 #include <chrono>
 #include <iostream>
 
-#include <MarsLogging>
+#include <marsLogging>
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -177,7 +177,7 @@ int main()
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   result << "\nNEW: Timing heap allocated objects: logging of long strings"
-            " with macros defined in `MarsLogging`:\n";
+            " with macros defined in `marsLogging`:\n";
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     LOG_FUNC_DETAIL(eval) << "this is a message with a long string. I am afraid...";

@@ -1,4 +1,4 @@
-#include <MarsLogging>
+#include <marsLogging>
 
 // this defines the function template for log_message()
 // for the global scope with global enable and level definitions
