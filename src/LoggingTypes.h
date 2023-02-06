@@ -2,6 +2,7 @@
 #define _ML_LOGGING_TYPES_H_
 
 #include <unordered_map>  // log level prefixes (un-/colored) and LoggingConfig
+#include <string>
 
 namespace marsLogging {
 
