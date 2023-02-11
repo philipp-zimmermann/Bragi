@@ -49,7 +49,7 @@ target_compile_features(marsLogging_config INTERFACE cxx_std_14)
 
 ##▁6▁EXAMPLES▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 if(_ML_IS_MAIN_PROJECT)
-  add_subdirectory(bin/examples)
+  add_subdirectory(exampleProject)
 endif()
 
 
