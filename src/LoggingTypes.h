@@ -1,10 +1,10 @@
-#ifndef _ML_LOGGING_TYPES_H_
-#define _ML_LOGGING_TYPES_H_
+#ifndef _BRAGI_LOGGING_TYPES_H_
+#define _BRAGI_LOGGING_TYPES_H_
 
 #include <unordered_map>  // log level prefixes (un-/colored) and LoggingConfig
 #include <string>
 
-namespace marsLogging {
+namespace bragi {
 
 enum class LogLevel
 {
@@ -18,7 +18,7 @@ enum class LogLevel
 };
 
 
-// Passed to MARSLOGGINING_INIT to configure which logged messages within this scope
+// Passed to BRAGI_INIT to configure which logged messages within this scope
 // (component) are to be printed
 struct ComponentConfig
 {
@@ -62,10 +62,10 @@ const std::unordered_map<LogLevel, std::string, EnumHasher> uncoloredPrefixes{
 
 
 struct NO_SOURCE_DEFINED
-{};  // default for mars::Logger template argument
+{};  // default for bragi::Logger template argument
 
 
-constexpr const char* DEFAULT_LOG_FILE_PATH = "marsLOG.txt";  // default for FileLogWriter
+constexpr const char* DEFAULT_LOG_FILE_PATH = "bragi_LOG.txt";  // default for FileLogWriter
 
-}  // namespace marsLogging
-#endif  // _ML_LOG_LEVEL_H_
+}  // namespace bragi
+#endif  // _BRAGI_LOG_LEVEL_H_

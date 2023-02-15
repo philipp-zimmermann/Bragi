@@ -6,8 +6,8 @@
  * @date 28th May 2021
  */
 
-#ifndef _ML_LOG_BUFFER_H_
-#define _ML_LOG_BUFFER_H_
+#ifndef _BRAGI_LOG_BUFFER_H_
+#define _BRAGI_LOG_BUFFER_H_
 
 #include <boost/core/demangle.hpp>  // demabglig of typeinfo (For other implementation: https://stackoverflow.com/questions/281818/unmangling-the-result-of-stdtype-infoname)
 #include <sstream>                  // Logger::logBuffer_
@@ -15,7 +15,7 @@
 
 #include "LoggingTypes.h"
 
-namespace marsLogging {
+namespace bragi {
 
 class EmptyLogBuffer
 {
@@ -75,5 +75,5 @@ class LogBuffer
   std::ostringstream buffer_;
 };
 
-}  // namespace marsLogging
-#endif  // _ML_LOG_BUFFER_H_
+}  // namespace bragi
+#endif  // _BRAGI_LOG_BUFFER_H_

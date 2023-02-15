@@ -1,10 +1,10 @@
 /**
  * @file Logger.h
  * @author Philipp Zimmermann (philipp.zimmermann@sci-track.com, zimmermp@cs.uni-kl.de)
- * @brief marsLogging framework: This header provides the implementation. It should not be
- * included directly, use the header `marsLogging` instead.
+ * @brief bragi framework: This header provides the implementation. It should not be
+ * included directly, use the header `bragi` instead.
  *
- * marsLogging is logically structured as followes:
+ * bragi is logically structured as followes:
  * 1. Messages are logged with instances of class Logger. Messages can be passed to Logger
  *    via its constructor or operator<<
  * 2. Each Logger instance buffers all messages passed to it with its member logBuffer_
@@ -31,21 +31,21 @@
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // type checks or setting of default values
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-namespace marsLogging {
-#if defined(MARSLOGGING_GLOBAL_LEVEL)
-static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_LEVEL), LogLevel>::value,
-              "MARSLOGGING_GLOBAL_LEVEL is not of type marsLogging::Loglevel.");
+namespace bragi {
+#if defined(BRAGI_GLOBAL_LEVEL)
+static_assert(std::is_same<decltype(BRAGI_GLOBAL_LEVEL), LogLevel>::value,
+              "BRAGI_GLOBAL_LEVEL is not of type bragi::Loglevel.");
 #else
-#define MARSLOGGING_GLOBAL_LEVEL LogLevel::info
+#define BRAGI_GLOBAL_LEVEL LogLevel::info
 #endif
 
-#if defined(MARSLOGGING_GLOBAL_ENABLE)
-static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
-              "MARSLOGGING_GLOBAL_ENABLE is not of type bool.");
+#if defined(BRAGI_GLOBAL_ENABLE)
+static_assert(std::is_same<decltype(BRAGI_GLOBAL_ENABLE), bool>::value,
+              "BRAGI_GLOBAL_ENABLE is not of type bool.");
 #else
-#define MARSLOGGING_GLOBAL_ENABLE true
+#define BRAGI_GLOBAL_ENABLE true
 #endif
-}  // namespace marsLogging
+}  // namespace bragi
 
 // clang-format off
 #include "LogWriter.h"
@@ -55,7 +55,7 @@ static_assert(std::is_same<decltype(MARSLOGGING_GLOBAL_ENABLE), bool>::value,
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // log messages
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-namespace marsLogging {
+namespace bragi {
 /**
  * @brief This is the masLogging interface, with which a message is logged.
  *
@@ -67,9 +67,9 @@ namespace marsLogging {
  * @tparam localCutoffLevel  the local cutoff level, defaults to the global cutoff.
  * @tparam localEnable       enables/disables printing for this message
  */
-template <LogLevel msgLevel = marsLogging::LogLevel::error,
+template <LogLevel msgLevel = bragi::LogLevel::error,
           class sourceClass = NO_SOURCE_DEFINED,
-          LogLevel localCutoffLevel = MARSLOGGING_GLOBAL_LEVEL, bool localEnable = true>
+          LogLevel localCutoffLevel = BRAGI_GLOBAL_LEVEL, bool localEnable = true>
 class Logger
 {
  public:
@@ -97,7 +97,7 @@ class Logger
  private:
   constexpr static bool isPrinted() noexcept
   {
-    return (MARSLOGGING_GLOBAL_ENABLE && localEnable && msgLevel >= localCutoffLevel);
+    return (BRAGI_GLOBAL_ENABLE && localEnable && msgLevel >= localCutoffLevel);
   }
   // determines if this logged message is to be printed, if so the type of logBuffer_ is
   // LogBuffer, otherwise is is an EmptyLogBuffer this enables zero computation cost with
@@ -107,5 +107,5 @@ class Logger
 };
 
 
-}  // namespace marsLogging
+}  // namespace bragi
 #endif  // include guard

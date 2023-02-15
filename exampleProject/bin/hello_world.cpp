@@ -1,5 +1,5 @@
-#include <marsLogging>
+#include <bragi>
 
-MARSLOGGINING_INIT()
+BRAGI_INIT()
 
 int main() { LOG_INFO << "Hello World"; }

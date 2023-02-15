@@ -5,54 +5,54 @@
 # @brief adds options for the passed component name with provided initial values.
 #
 # @synopsis
-#   marsLogging_add_component(<component_name> [LEVEL <level_val>] [ENABLE <enable_val>])
+#   bragi_add_component(<component_name> [LEVEL <level_val>] [ENABLE <enable_val>])
 #
 # The generated options are named:
-# MARSLOGGING_${component_name}_ENABLE and MARSLOGGING_${component_name}_LEVEL
+# BRAGI_${component_name}_ENABLE and BRAGI_${component_name}_LEVEL
 # where the component_name is always converted to uppercase
 #
 # NOTE: This does not override any values of already existent chache variables.
 #       These may exist from prior runs of `cmake` or beacuse they are passed as command-
 #       line arguments to `cmake`.
 #
-function(marsLogging_add_component component_name)
-  cmake_parse_arguments(PARSE_ARGV 1 ${_ML_ARG_PREFIX} "" "${_ML_OPTIONS_KEYWORDS}" "")
+function(bragi_add_component component_name)
+  cmake_parse_arguments(PARSE_ARGV 1 ${_BRAGI_ARG_PREFIX} "" "${_BRAGI_OPTIONS_KEYWORDS}" "")
   _check_and_warn_unpares_args()
 
-  if(NOT "${${_ML_ARG_PREFIX}_ENABLE}" STREQUAL "")
-    set(enable_value ${${_ML_ARG_PREFIX}_ENABLE})
+  if(NOT "${${_BRAGI_ARG_PREFIX}_ENABLE}" STREQUAL "")
+    set(enable_value ${${_BRAGI_ARG_PREFIX}_ENABLE})
   else()
     set(enable_value true)
   endif()
 
-  if(NOT "${${_ML_ARG_PREFIX}_LEVEL}" STREQUAL "")
-    set(level_value ${${_ML_ARG_PREFIX}_LEVEL})
+  if(NOT "${${_BRAGI_ARG_PREFIX}_LEVEL}" STREQUAL "")
+    set(level_value ${${_BRAGI_ARG_PREFIX}_LEVEL})
   else()
     set(level_value info)
   endif()
 
   string(TOUPPER ${component_name} comp_upper)
-  set(_ML_COMPONENT_LIST ${_ML_COMPONENT_LIST};${comp_upper} CACHE INTERNAL "")
+  set(_BRAGI_COMPONENT_LIST ${_BRAGI_COMPONENT_LIST};${comp_upper} CACHE INTERNAL "")
 
   # add the two corresponding options
-  set(MARSLOGGING_${comp_upper}_ENABLE ${enable_value} CACHE STRING "")
-  set(MARSLOGGING_${comp_upper}_LEVEL ${level_value} CACHE STRING "")
+  set(BRAGI_${comp_upper}_ENABLE ${enable_value} CACHE STRING "")
+  set(BRAGI_${comp_upper}_LEVEL ${level_value} CACHE STRING "")
 
   # add properties to the options, for easy usage with ccmake & cmake-gui
-  set_property(CACHE MARSLOGGING_${comp_upper}_ENABLE PROPERTY
-                                                      STRINGS ${_ML_VALID_ENABLE_NAMES})
-  set_property(CACHE MARSLOGGING_${comp_upper}_LEVEL PROPERTY
-                                                    STRINGS ${_ML_VALID_LEVEL_NAMES})
+  set_property(CACHE BRAGI_${comp_upper}_ENABLE PROPERTY
+                                                      STRINGS ${_BRAGI_VALID_ENABLE_NAMES})
+  set_property(CACHE BRAGI_${comp_upper}_LEVEL PROPERTY
+                                                    STRINGS ${_BRAGI_VALID_LEVEL_NAMES})
 
   # generate the temporary file, which is the source for ComponentConfig.h
   generate_temp_file()
 endfunction()
 
 
-# @brief set the values of component options created with marsLogging_add_component()
+# @brief set the values of component options created with bragi_add_component()
 #
 # @synopsis
-#   marsLogging_set_options(<component_name> [LEVEL <level_val>] [ENABLE <enable_val>])
+#   bragi_set_options(<component_name> [LEVEL <level_val>] [ENABLE <enable_val>])
 #
 # NOTE: * this overrides any command line arguments, passed to cmake!
 #         Changes done with cmake-gui and ccmake are overridden as well.
@@ -60,12 +60,12 @@ endfunction()
 #         file `LoggingComponentConfig.h` might otherwise not be generated correctly.
 #         If you wish to implement component config logic in cmake use this function.
 #
-function(marsLogging_set_options component_name)
-  cmake_parse_arguments(PARSE_ARGV 1 ${_ML_ARG_PREFIX} "" "${_ML_OPTIONS_KEYWORDS}" "")
+function(bragi_set_options component_name)
+  cmake_parse_arguments(PARSE_ARGV 1 ${_BRAGI_ARG_PREFIX} "" "${_BRAGI_OPTIONS_KEYWORDS}" "")
   _check_and_warn_unpares_args()
-  foreach(keyword IN LISTS _ML_OPTIONS_KEYWORDS)
+  foreach(keyword IN LISTS _BRAGI_OPTIONS_KEYWORDS)
     string(TOUPPER ${component_name} comp_upper)
-    set(MARSLOGGING_${comp_upper}_${keyword} ${${_ML_ARG_PREFIX}_${keyword}}
+    set(BRAGI_${comp_upper}_${keyword} ${${_BRAGI_ARG_PREFIX}_${keyword}}
                                              CACHE STRING "" FORCE)
   endforeach()
   generate_temp_file()
@@ -78,26 +78,26 @@ endfunction()
 ##––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 ###_internal_chached_constants____________________________________________________________
-set(_ML_VALID_LEVEL_NAMES  "trace;debug;eval;info;warn;error;dev" CACHE INTERNAL
+set(_BRAGI_VALID_LEVEL_NAMES  "trace;debug;eval;info;warn;error;dev" CACHE INTERNAL
                            "The list of valid strings for log level names")
-set(_ML_VALID_ENABLE_NAMES  "true;false" CACHE INTERNAL
+set(_BRAGI_VALID_ENABLE_NAMES  "true;false" CACHE INTERNAL
                             "The list of valid strings for component_enable")
 
-set(_ML_COMPONENT_LIST "" CACHE INTERNAL "")
-set(_ML_COMPONENT_CONFIG_TEMP ${_ML_COMPONENT_CONFIG_DIR}/LoggingComponentConfig.h.in
+set(_BRAGI_COMPONENT_LIST "" CACHE INTERNAL "")
+set(_BRAGI_COMPONENT_CONFIG_TEMP ${_BRAGI_COMPONENT_CONFIG_DIR}/LoggingComponentConfig.h.in
                               CACHE INTERNAL "")
-set(_ML_COMPONENT_CONFIG_HEADER ${_ML_COMPONENT_CONFIG_DIR}/LoggingComponentConfig.h
+set(_BRAGI_COMPONENT_CONFIG_HEADER ${_BRAGI_COMPONENT_CONFIG_DIR}/LoggingComponentConfig.h
                                 CACHE INTERNAL "")
 
 
 ###_utils_for_argument_parsing____________________________________________________________
-set(_ML_ARG_PREFIX ARG CACHE INTERNAL "")
-set(_ML_OPTIONS_KEYWORDS ENABLE LEVEL CACHE INTERNAL "")
+set(_BRAGI_ARG_PREFIX ARG CACHE INTERNAL "")
+set(_BRAGI_OPTIONS_KEYWORDS ENABLE LEVEL CACHE INTERNAL "")
 
 macro(_check_and_warn_unpares_args)
-  if(${_ML_ARG_PREFIX}_UNPARSED_ARGUMENTS)
-  message(WARNING "marsLogging_add_component was called with unparsed arguments:\
-      ${${_ML_ARG_PREFIX}_UNPARSED_ARGUMENTS}")
+  if(${_BRAGI_ARG_PREFIX}_UNPARSED_ARGUMENTS)
+  message(WARNING "bragi_add_component was called with unparsed arguments:\
+      ${${_BRAGI_ARG_PREFIX}_UNPARSED_ARGUMENTS}")
   endif()
 endmacro()
 
@@ -105,49 +105,49 @@ endmacro()
 ###_utility_functions_____________________________________________________________________
 function(generate_temp_file)
   string(CONCAT component_config_file_preamble
-      "// This file is automatically generated by marsLogging.cmake\n"
-      "// For each <component_name> passed to marsLogging_add_component() the following\n"
+      "// This file is automatically generated by bragi.cmake\n"
+      "// For each <component_name> passed to bragi_add_component() the following\n"
       "//   three variables are defined:\n"
-      "//   * MARSLOGGING_<upper_case(<component_name>)>_ENABLE\n"
-      "//   * MARSLOGGING_<upper_case(<component_name>)>_LEVEL\n"
+      "//   * BRAGI_<upper_case(<component_name>)>_ENABLE\n"
+      "//   * BRAGI_<upper_case(<component_name>)>_LEVEL\n"
       "//   * compConfig_<lower_case(<component_name>)>\n\n"
-      "#ifndef _ML_PRINT_CONFIG_H_\n#define _ML_PRINT_CONFIG_H_\n")
+      "#ifndef _BRAGI_PRINT_CONFIG_H_\n#define _BRAGI_PRINT_CONFIG_H_\n")
 
-  file(WRITE ${_ML_COMPONENT_CONFIG_TEMP} ${component_config_file_preamble})
-  foreach(component_name IN LISTS _ML_COMPONENT_LIST)
+  file(WRITE ${_BRAGI_COMPONENT_CONFIG_TEMP} ${component_config_file_preamble})
+  foreach(component_name IN LISTS _BRAGI_COMPONENT_LIST)
     string(TOLOWER ${component_name} comp_lower)
     generate_CXX_log_level(${component_name} cxx_style_log_level)
     string(CONCAT content
-      "\n#define MARSLOGGING_${component_name}_ENABLE "
-      "@MARSLOGGING_${component_name}_ENABLE@\n"
+      "\n#define BRAGI_${component_name}_ENABLE "
+      "@BRAGI_${component_name}_ENABLE@\n"
 
-      "#define MARSLOGGING_${component_name}_LEVEL ${cxx_style_log_level}\n"
+      "#define BRAGI_${component_name}_LEVEL ${cxx_style_log_level}\n"
 
-      "constexpr marsLogging::ComponentConfig compConfig_${comp_lower}"
-      "{MARSLOGGING_${component_name}_ENABLE,\n    "
-      "MARSLOGGING_${component_name}_LEVEL}\;\n")
-    file(APPEND ${_ML_COMPONENT_CONFIG_TEMP} ${content})
+      "constexpr bragi::ComponentConfig compConfig_${comp_lower}"
+      "{BRAGI_${component_name}_ENABLE,\n    "
+      "BRAGI_${component_name}_LEVEL}\;\n")
+    file(APPEND ${_BRAGI_COMPONENT_CONFIG_TEMP} ${content})
   endforeach()
 
-  file(APPEND ${_ML_COMPONENT_CONFIG_TEMP} "\n#endif  // _ML_PRINT_CONFIG_H_")
-  configure_file(${_ML_COMPONENT_CONFIG_TEMP} ${_ML_COMPONENT_CONFIG_HEADER})
+  file(APPEND ${_BRAGI_COMPONENT_CONFIG_TEMP} "\n#endif  // _BRAGI_PRINT_CONFIG_H_")
+  configure_file(${_BRAGI_COMPONENT_CONFIG_TEMP} ${_BRAGI_COMPONENT_CONFIG_HEADER})
 endfunction()
 
 
 function(generate_CXX_log_level component_name return_var)
-  set(level_value ${MARSLOGGING_${component_name}_LEVEL})
-  if(${level_value} IN_LIST _ML_VALID_LEVEL_NAMES)
-    set(${return_var} "marsLogging::LogLevel::@MARSLOGGING_${component_name}_LEVEL@"
+  set(level_value ${BRAGI_${component_name}_LEVEL})
+  if(${level_value} IN_LIST _BRAGI_VALID_LEVEL_NAMES)
+    set(${return_var} "bragi::LogLevel::@BRAGI_${component_name}_LEVEL@"
                   PARENT_SCOPE)
   elseif(${level_value} GREATER_EQUAL 0 AND ${level_value} LESS_EQUAL 255)
     set(${return_var}
-        "static_cast<marsLogging::LogLevel>(@MARSLOGGING_${component_name}_LEVEL@)"
+        "static_cast<bragi::LogLevel>(@BRAGI_${component_name}_LEVEL@)"
         PARENT_SCOPE)
   else()
     string(CONCAT error_msg
-        "\"MARSLOGGING_${component_name}_LEVEL\"=${MARSLOGGING_${component_name}_LEVEL} "
-        "is neither a valid level name as defined in _ML_VALID_LEVEL_NAMES"
-        "=[${_ML_VALID_LEVEL_NAMES}] nor a valid 8 bit unsigned integer.")
+        "\"BRAGI_${component_name}_LEVEL\"=${BRAGI_${component_name}_LEVEL} "
+        "is neither a valid level name as defined in _BRAGI_VALID_LEVEL_NAMES"
+        "=[${_BRAGI_VALID_LEVEL_NAMES}] nor a valid 8 bit unsigned integer.")
     message(FATAL_ERROR ${error_msg})
   endif()
 endfunction()

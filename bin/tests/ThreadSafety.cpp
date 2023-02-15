@@ -1,4 +1,4 @@
-#include <marsLogging>
+#include <bragi>
 #include <string>
 #include <iostream>
 #include <thread>
@@ -10,10 +10,10 @@ struct AsyncTest{};
 template <uint8_t lvl>
 constexpr auto asyncLog()
 {
-  return marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), AsyncTest>{};
+  return bragi::Logger<static_cast<bragi::LogLevel>(lvl), AsyncTest>{};
 }
 
-MARSLOGGINING_INIT(AsyncTest, compConfig_threadsafety)
+BRAGI_INIT(AsyncTest, compConfig_threadsafety)
 
 void work()
 {
@@ -87,7 +87,7 @@ void work()
 
 int main()
 {
-  marsLogging::Logger<marsLogging::LogLevel::info>()
+  bragi::Logger<bragi::LogLevel::info>()
       << "––––––––––––––––––––––––––Async–Test––––––––––––––––––––––––––\n";
   std::vector<std::future<void>> results;
   for (size_t i = 0; i < 5; ++i)  // starts 5 threads

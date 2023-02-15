@@ -1,11 +1,11 @@
-#ifndef _MARS_LOGGING_
-#define _MARS_LOGGING_
+#ifndef _BRAGI_
+#define _BRAGI_
 
 // clang-format off
-#include "LoggingTypes.h"            // defines types used for marsLogging
+#include "LoggingTypes.h"            // defines types used for bragi
 #include "LoggingComponentConfig.h"  // defines global/component-wide levels and enables
-#include "Logger.h"                  // implementation for the marsLogging functionalities
-#include "LoggingUtilityMacros.h"    // defines _ML_MACRO_CHOOSER and its dependencies
+#include "Logger.h"                  // implementation for the bragi functionalities
+#include "LoggingUtilityMacros.h"    // defines _BRAGI_MACRO_CHOOSER and its dependencies
 // clang-format on
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -13,34 +13,34 @@
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 /**
  * @brief defines the function log_message() on which the LOG_ macros depend.
- *    Usage: MARSLOGGINING_INIT([ClassName[, compConfig_<compName>]])
+ *    Usage: BRAGI_INIT([ClassName[, compConfig_<compName>]])
  *
  * @details
  * This is intended to be used in multiple different scopes.
  * Multiple calls within nested scopes are valid.
  *
- * Depending on the passed arguments the marsLogging behaviour for the current namespace
+ * Depending on the passed arguments the bragi behaviour for the current namespace
  * is configured. Following three variants are valid:
  *
- *   1. MARSLOGGINING_INIT()
+ *   1. BRAGI_INIT()
  *          -> no [<sourceClass>] prefix for any printed messages.
  *          -> Global level and enable determine whether logged messages are printed.
  *
- *   2. MARSLOGGINING_INIT(<ClassName>)
+ *   2. BRAGI_INIT(<ClassName>)
  *          -> [<ClassName>] is prefixed for all printed messages
  *          -> Global level and enable determine whether logged messages are printed.
  *
- *   3. MARSLOGGINING_INIT(<ClassName>, <ComponentConfig>)
+ *   3. BRAGI_INIT(<ClassName>, <ComponentConfig>)
  *          -> [<ClassName>] is prefixed for all printed messages.
  *          -> Global enable && local enable determine whether logging is eanabled.
  *          -> Local level determines the printed message level.
  *             This overrides the global value
- *          NOTE: * <ComponentConfig> has to be of type marsLogging::ComponentConfig
+ *          NOTE: * <ComponentConfig> has to be of type bragi::ComponentConfig
  *                * an initializer list is _NOT_ valid here!
  *                  This breaks the variadic argument expansion.
  * prefixed to each message
  */
-#define MARSLOGGINING_INIT(...) _ML_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define BRAGI_INIT(...) _BRAGI_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -49,35 +49,35 @@
 // These macros are convenience wrappers around the log_message() function. They call the
 // first function found via unqualified name lookup.
 
-#define LOG_TRACE log_message<marsLogging::LogLevel::trace>()
-#define LOG_DEBUG log_message<marsLogging::LogLevel::debug>()
-#define LOG_EVAL log_message<marsLogging::LogLevel::eval>()
-#define LOG_INFO log_message<marsLogging::LogLevel::info>()
-#define LOG_WARN log_message<marsLogging::LogLevel::warn>()
-#define LOG_ERROR log_message<marsLogging::LogLevel::error>()
-#define LOG_DEV log_message<marsLogging::LogLevel::dev>()
+#define LOG_TRACE log_message<bragi::LogLevel::trace>()
+#define LOG_DEBUG log_message<bragi::LogLevel::debug>()
+#define LOG_EVAL log_message<bragi::LogLevel::eval>()
+#define LOG_INFO log_message<bragi::LogLevel::info>()
+#define LOG_WARN log_message<bragi::LogLevel::warn>()
+#define LOG_ERROR log_message<bragi::LogLevel::error>()
+#define LOG_DEV log_message<bragi::LogLevel::dev>()
 
 // @brief logs a message with the passed level and prepends function and line information
-// @param enum_level the _bare_ member names of marsLogging::LogLevel.
+// @param enum_level the _bare_ member names of bragi::LogLevel.
 #define LOG_FUNC_DETAIL(enum_level)                \
-  log_message<marsLogging::LogLevel::enum_level>() \
+  log_message<bragi::LogLevel::enum_level>() \
       << __FUNCTION__ << ':' << __LINE__ << ": "
 
 // @brief logs a message with a custom message level
 // @param msgLevel of type uint8_t
-#define LOG_CUSTOM(int_level) log_message<static_cast<marsLogging::LogLevel>(int_level)>()
+#define LOG_CUSTOM(int_level) log_message<static_cast<bragi::LogLevel>(int_level)>()
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // RUNTIME CONFIGURATION FOR COMPILATION UNIT
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-namespace marsLogging {
+namespace bragi {
 /**
- * @brief Runtime compilation-unit-wide configuration for the marsLogging framework.
+ * @brief Runtime compilation-unit-wide configuration for the bragi framework.
  *
  * This should be called once, before any LOG_ macro is executed (In detail: before any
- * marsLogging::Logger instance is created). When this function is not called, the default
- * value is used as defined by marsLogging::getLogWriter(), which is: {{"type",
+ * bragi::Logger instance is created). When this function is not called, the default
+ * value is used as defined by bragi::getLogWriter(), which is: {{"type",
  * "std_cerr"},{"color", ""}}
  *
  * See 0_globalConfig_and_coreConcept.cpp for all other valid configurations.
@@ -86,6 +86,6 @@ namespace marsLogging {
  * @param config std::unordered_map<std::string, std::string>
  */
 inline void configureLogging(const LoggingConfig& config) { getLogWriter(config); }
-}  // namespace marsLogging
+}  // namespace bragi
 
-#endif  // _MARS_LOGGING_
+#endif  // _BRAGI_

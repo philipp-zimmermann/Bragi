@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 
 string(CONCAT project_desc "Minimal logging framework. The main focus is "
        "zero runtime overhead, while being threadsafe and convenient to use.")
-project(marsLogging
+project(bragi
         VERSION 2.0.0
         LANGUAGES CXX
         DESCRIPTION ${project_desc})
@@ -12,7 +12,7 @@ project(marsLogging
 
 ##▁1▁DETERMINE▁ENVIRONMENT▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  set(_ML_IS_MAIN_PROJECT 1)
+  set(_BRAGI_IS_MAIN_PROJECT 1)
 endif()
 
 
@@ -23,39 +23,39 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 
 ##▁3▁CONFIGURE▁PROJECT▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-set(_ML_INCLUDE_DIR ${marsLogging_SOURCE_DIR}/include CACHE INTERNAL "") # this will change when installing
-set(_ML_SOURCE_DIR ${marsLogging_SOURCE_DIR}/src CACHE INTERNAL "")
-set(_ML_COMPONENT_CONFIG_DIR ${marsLogging_BINARY_DIR} CACHE INTERNAL "")
+set(_BRAGI_INCLUDE_DIR ${bragi_SOURCE_DIR}/include CACHE INTERNAL "") # this will change when installing
+set(_BRAGI_SOURCE_DIR ${bragi_SOURCE_DIR}/src CACHE INTERNAL "")
+set(_BRAGI_COMPONENT_CONFIG_DIR ${bragi_BINARY_DIR} CACHE INTERNAL "")
 
 
 
 ##▁4▁OPTIONS▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-# Provides the function marsLogging_add_component (component_name)
+# Provides the function bragi_add_component (component_name)
 # This is the recommendet way to add component local enable and log-level options.
 # The Header ComponentConfig.h is automatically generated with defines for all components.
 include(LoggingOptions)
-marsLogging_add_component(GLOBAL)  # options for component GLOBAL are set by default
+bragi_add_component(GLOBAL)  # options for component GLOBAL are set by default
 
 
 
 ##▁5▁EXPORTED▁TARGETS▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-add_library(marsLogging_config INTERFACE)
-target_include_directories(marsLogging_config INTERFACE ${_ML_INCLUDE_DIR}
-                                                        ${_ML_SOURCE_DIR}
-                                                        ${_ML_COMPONENT_CONFIG_DIR})
-target_compile_features(marsLogging_config INTERFACE cxx_std_14)
+add_library(bragi_config INTERFACE)
+target_include_directories(bragi_config INTERFACE ${_BRAGI_INCLUDE_DIR}
+                                                        ${_BRAGI_SOURCE_DIR}
+                                                        ${_BRAGI_COMPONENT_CONFIG_DIR})
+target_compile_features(bragi_config INTERFACE cxx_std_14)
 
 
 
 ##▁6▁EXAMPLES▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-if(_ML_IS_MAIN_PROJECT)
+if(_BRAGI_IS_MAIN_PROJECT)
   add_subdirectory(exampleProject)
 endif()
 
 
 
 ##▁7▁TESTS▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-if(_ML_IS_MAIN_PROJECT)
+if(_BRAGI_IS_MAIN_PROJECT)
   add_subdirectory(bin/tests)
 endif()
 

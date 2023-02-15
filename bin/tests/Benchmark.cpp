@@ -1,7 +1,7 @@
 #include <chrono>
 #include <iostream>
 
-#include <marsLogging>
+#include <bragi>
 
 
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -42,36 +42,36 @@ struct Benchmark{}; // for the output prefix
 template <uint8_t lvl>
 constexpr static auto function_LOG() noexcept
 {
-  return marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{};
+  return bragi::Logger<static_cast<bragi::LogLevel>(lvl), Benchmark>{};
 }
 
 // using statements:
-using using_TRACE = marsLogging::Logger<marsLogging::LogLevel::trace, Benchmark>;
-using using_WARN = marsLogging::Logger<marsLogging::LogLevel::warn, Benchmark>;
+using using_TRACE = bragi::Logger<bragi::LogLevel::trace, Benchmark>;
+using using_WARN = bragi::Logger<bragi::LogLevel::warn, Benchmark>;
 
 // define macro:
-#define macro_LOG(lvl) marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{}
+#define macro_LOG(lvl) bragi::Logger<static_cast<bragi::LogLevel>(lvl), Benchmark>{}
 
 // function wrapper with constructor
 template <uint8_t lvl, typename msgType = std::string>
 constexpr inline auto ctor_LOG(msgType&& msg = "")
 {
-  return marsLogging::Logger<static_cast<marsLogging::LogLevel>(lvl), Benchmark>{
+  return bragi::Logger<static_cast<bragi::LogLevel>(lvl), Benchmark>{
       std::forward<msgType>(msg)};
 }
 
-MARSLOGGINING_INIT(Benchmark, compConfig_benchmark)
+BRAGI_INIT(Benchmark, compConfig_benchmark)
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 
 int main()
 {
   // CONFIGURATION AT RUNTIME
-  marsLogging::configureLogging({{"type", "std_cerr"},{"color",""}});
-  // marsLogging::configureLogging({{"type", "file"}, {"path", "benchmarkResults.txt"}});
+  bragi::configureLogging({{"type", "std_cerr"},{"color",""}});
+  // bragi::configureLogging({{"type", "file"}, {"path", "benchmarkResults.txt"}});
 
 
-  marsLogging::Logger<marsLogging::LogLevel::info, Benchmark> result;
+  bragi::Logger<bragi::LogLevel::info, Benchmark> result;
   Timer timer;
   std::cout << "\n\n";
   result << "____________________RESULTS____________________\n";
@@ -177,7 +177,7 @@ int main()
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
   result << "\nNEW: Timing heap allocated objects: logging of long strings"
-            " with macros defined in `marsLogging`:\n";
+            " with macros defined in `bragi`:\n";
   timer.start();
   for ( uint32_t i = 0; i < 10000; ++i) {
     LOG_FUNC_DETAIL(eval) << "this is a message with a long string. I am afraid...";

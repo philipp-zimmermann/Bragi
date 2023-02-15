@@ -18,7 +18,7 @@
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // LogWriter implementations
 //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-namespace marsLogging {
+namespace bragi {
 
 class LogWriter
 {
@@ -136,15 +136,15 @@ class FileLogWriter : public LogWriter
 inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config)
 {
   using namespace std::string_literals;
-  const auto logLevelPrefix{uncoloredPrefixes.find(MARSLOGGING_GLOBAL_LEVEL)};
+  const auto logLevelPrefix{uncoloredPrefixes.find(BRAGI_GLOBAL_LEVEL)};
   const std::string creationInfo =
       "Global log level = "s +
       (logLevelPrefix != uncoloredPrefixes.end()
            ? logLevelPrefix->second
-           : "[" + std::to_string(static_cast<uint8_t>(MARSLOGGING_GLOBAL_LEVEL)) + "]");
+           : "[" + std::to_string(static_cast<uint8_t>(BRAGI_GLOBAL_LEVEL)) + "]");
 
   auto printConfigError = [] {
-    if (MARSLOGGING_GLOBAL_LEVEL <= LogLevel::error)
+    if (BRAGI_GLOBAL_LEVEL <= LogLevel::error)
     {
       std::cerr << "\x1b[31;1m[ERROR]\x1b[0m "
                 << "[configureLogging] found no valid type for LogWriter,"
@@ -153,12 +153,12 @@ inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config)
   };
 
 
-#ifdef MARSLOGGING_GLOBAL_ENABLE
+#ifdef BRAGI_GLOBAL_ENABLE
   const auto type = config.find("type");
   if (type->second == "std_cerr")
   {
     std::unique_ptr<CerrLogWriter> cerrLogWriter(new CerrLogWriter{config});
-    if (MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug)
+    if (BRAGI_GLOBAL_LEVEL <= LogLevel::debug)
     {
       cerrLogWriter->log(std::move(creationInfo), LogLevel::debug);
     }
@@ -167,7 +167,7 @@ inline std::unique_ptr<LogWriter> createLogWriter(const LoggingConfig& config)
   else if (type->second == "file")
   {
     auto fileLogWriter = std::make_unique<FileLogWriter>(config);
-    if (MARSLOGGING_GLOBAL_LEVEL <= LogLevel::debug)
+    if (BRAGI_GLOBAL_LEVEL <= LogLevel::debug)
     {
       fileLogWriter->log(std::move(creationInfo), LogLevel::debug);
     }
@@ -192,5 +192,5 @@ inline LogWriter& getLogWriter(const LoggingConfig& config = {{"type", "std_cerr
 }
 
 
-}  // namespace marsLogging
+}  // namespace bragi
 #endif
