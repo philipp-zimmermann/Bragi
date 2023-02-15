@@ -15,5 +15,3 @@ CMakeC*
 bin/examples*
 bin/tests/_*
 cmake/*
-doc/*
-README.md
