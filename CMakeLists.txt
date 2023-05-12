@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.14)
 string(CONCAT project_desc "Minimal logging framework. The main focus is "
        "zero runtime overhead, while being threadsafe and convenient to use.")
 project(bragi
-        VERSION 2.0.0
+        VERSION 3.0.0
         LANGUAGES CXX
         DESCRIPTION ${project_desc})
 
@@ -43,7 +43,7 @@ add_library(bragi_config INTERFACE)
 target_include_directories(bragi_config INTERFACE ${_BRAGI_INCLUDE_DIR}
                                                         ${_BRAGI_SOURCE_DIR}
                                                         ${_BRAGI_COMPONENT_CONFIG_DIR})
-target_compile_features(bragi_config INTERFACE cxx_std_14)
+target_compile_features(bragi_config INTERFACE cxx_std_20)
 
 
 

@@ -9,10 +9,10 @@
 #ifndef _BRAGI_LOG_BUFFER_H_
 #define _BRAGI_LOG_BUFFER_H_
 
-#include <boost/core/demangle.hpp>  // demabglig of typeinfo (For other implementation: https://stackoverflow.com/questions/281818/unmangling-the-result-of-stdtype-infoname)
 #include <sstream>                  // Logger::logBuffer_
 #include <typeinfo>                 // message prefixes from calling class
 
+#include "BragiUtils.h"
 #include "LoggingTypes.h"
 
 namespace bragi {
@@ -46,7 +46,7 @@ class LogBuffer
   LogBuffer()
   {
     if (typeid(sourceClass) != typeid(NO_SOURCE_DEFINED))
-      buffer_ << '[' << boost::core::demangle(typeid(sourceClass).name()) << "] ";
+      buffer_ << '[' << demangle<sourceClass>() << "] ";
   }
   LogBuffer(LogBuffer&& other) = default;
 
