@@ -1,5 +1,6 @@
 #include <chrono>
 #include <iostream>
+#include <thread>
 
 #include <bragi>
 
@@ -191,6 +192,32 @@ int main()
   }
   duration = timer.stop();
   result << "HEAP CUTOFF:  " << duration << "µs (" << duration*0.001l << "ms)\n";
+
+  //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  result << "\nMessage generation: use an expensive function message generation\n";
+  auto generate_msg_with_wait_time = []
+  {
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(20ms);
+    return "generate_msg_with_wait_time";
+  };
+
+  timer.start();
+  for ( uint32_t i = 0; i < 100; ++i) {
+    LOG_FUNC_DETAIL(eval) << generate_msg_with_wait_time()
+                          << "   NOTE: this only runs 100 times, not 10'000";
+  }
+  duration = timer.stop();
+  result << "Message generation: " << duration << "µs (" << duration*0.001l << "ms)\n";
+
+  timer.start();
+  for ( uint32_t i = 0; i < 10000; ++i) {
+    LOG_DEBUG << generate_msg_with_wait_time;
+  }
+  duration = timer.stop();
+  result << "Message generation CUTOFF:  "
+         << duration << "µs (" << duration*0.001l << "ms)\n";
 
   //––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
