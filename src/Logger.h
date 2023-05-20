@@ -4,7 +4,7 @@
  * @brief bragi framework: This header provides the implementation. It should not be
  * included directly, use the header `bragi` instead.
  *
- * bragi is logically structured as followes:
+ * bragi is logically structured as follows:
  * 1. Messages are logged with instances of class Logger. Messages can be passed to Logger
  *    via its constructor or operator<<
  * 2. Each Logger instance buffers all messages passed to it with its member logBuffer_
@@ -16,7 +16,7 @@
  * 6. The LogBuffer destructor prints the buffered messages by passing the print_message
  *    to the LogWriter singleton object.
  * 7. By configuring the LogWriter instance (via configureLogging()) the destination
- *    (file or console) and style (colored or uncolored) can be selected.
+ *    (file or console) and style (coloured or uncolored) can be selected.
  *
  * @version 2.0.0
  * @date 28th May 2021
@@ -63,7 +63,7 @@ namespace bragi {
  * Message body is provided to the system via constructor argument or stream operator<<.
  *
  * @tparam msgLevel          The log Level for this message
- * @tparam sourceclass       defines the source prefix
+ * @tparam sourceClass       defines the source prefix
  * @tparam localCutoffLevel  the local cutoff level, defaults to the global cutoff.
  * @tparam localEnable       enables/disables printing for this message
  */
