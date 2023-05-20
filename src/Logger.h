@@ -86,8 +86,7 @@ class Logger
   }
 
   template <typename msgType>
-  constexpr Logger<msgLevel, sourceClass, localCutoffLevel, localEnable>& operator<<(
-      msgType&& message)
+  constexpr Logger& operator<<(msgType&& message)
   {
     logBuffer_ << std::forward<msgType>(message);
     return *this;
